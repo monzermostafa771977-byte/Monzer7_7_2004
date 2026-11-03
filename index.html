@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Monzer</title>
+<title>MonzerSmart</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Monzer">
+<meta name="apple-mobile-web-app-title" content="MonzerSmart">
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--tx:#1b1f24;--mu:#667085;--pr:#0f766e;--prt:#fff;--bd:#e4e7ec;--wr:#b42318;--wb:#fef3f2;--ok:#067647;--okb:#ecfdf3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1419;--card:#1a2027;--tx:#eef1f4;--mu:#98a2b3;--pr:#2dd4bf;--prt:#052e2b;--bd:#2b333c;--wr:#fda29b;--wb:#3b1512;--ok:#75e0a7;--okb:#12301f}}
@@ -215,7 +215,7 @@ function backupCard(){return '<div class="card"><h2>النسخة الاحتيا�
 var ICON='<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect width="512" height="512" rx="120" fill="url(#mg)"/><circle cx="256" cy="262" r="140" fill="none" stroke="#fff" stroke-width="30"/><path d="M256 176v90l62 40" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><circle cx="380" cy="132" r="42" fill="#fbbf24" stroke="#0f766e" stroke-width="14"/></svg>';
 function offStatus(){var e=document.getElementById('offs');if(!e)return;if(!navigator.onLine){e.className='pill off';e.textContent='📴 بدون إنترنت'}else if(window.__offReady){e.className='pill';e.textContent='✅ يعمل بدون إنترنت'}else{e.className='pill';e.textContent=''}}
 window.addEventListener('online',offStatus);window.addEventListener('offline',offStatus);
-var BRAND='<div class="brand">'+ICON+'<b>Monzer</b><span class="rt"><span class="pill" id="offs"></span><button class="cbtn" data-t="chat" type="button">💬<span id="cbd"></span></button></span></div>';
+var BRAND='<div class="brand">'+ICON+'<b>MonzerSmart</b><span class="rt"><span class="pill" id="offs"></span><button class="cbtn" data-t="chat" type="button">💬<span id="cbd"></span></button></span></div>';
 function render(){
  var v={today:vToday,leave:vLeave,work:vWork,rep:vRep,shift:vShift,chat:function(){return window.vChat?window.vChat():''}}[tab];
  document.getElementById('app').innerHTML=BRAND+v();offStatus();if(window.chatBadge)chatBadge();
