@@ -1,1254 +1,735 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONZER – نظام متابعة العمل (قانون العمل 14 لسنة 2025)</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            margin: 0;
-            padding: 12px;
-            padding-bottom: 80px;
-        }
-        .header-title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #38bdf8;
-            margin-bottom: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-        .sub-header {
-            text-align: center;
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 12px;
-        }
-        .main-container {
-            max-width: 520px;
-            margin: 0 auto;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .card {
-            background-color: #1e293b;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 14px;
-            border: 1px solid #334155;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .card-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #38bdf8;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .btn {
-            width: 100%;
-            padding: 11px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: transform 0.1s, opacity 0.2s;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        .btn-checkin { background-color: #10b981; }
-        .btn-checkout { background-color: #ef4444; }
-        .btn-overtime { background-color: #8b5cf6; }
-        .btn-friday { background-color: #f59e0b; }
-        .btn-saturday { background-color: #d97706; }
-        .btn-holiday { background-color: #06b6d4; }
-        .btn-secondary { background-color: #475569; }
-        .btn-success { background-color: #059669; }
-        .btn-danger { background-color: #dc2626; }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            color: #94a3b8;
-            margin-bottom: 4px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 9px;
-            border-radius: 6px;
-            border: 1px solid #475569;
-            background-color: #0f172a;
-            color: white;
-            font-size: 13px;
-        }
-        .form-row {
-            display: flex;
-            gap: 8px;
-        }
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .stat-box {
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 15px;
-            font-weight: bold;
-            color: #38bdf8;
-            margin-top: 4px;
-        }
-        .stat-label {
-            font-size: 11px;
-            color: #94a3b8;
-        }
-
-        .alert-banner {
-            background-color: #7f1d1d;
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1e293b;
-            border-top: 1px solid #334155;
-            display: flex;
-            justify-content: space-around;
-            padding: 6px 0;
-            z-index: 999;
-        }
-        .nav-item {
-            background: none;
-            border: none;
-            color: #64748b;
-            font-size: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            cursor: pointer;
-            width: 14%;
-        }
-        .nav-item.active {
-            color: #38bdf8;
-            font-weight: bold;
-        }
-        .nav-item span {
-            font-size: 16px;
-        }
-        .log-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 12px;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-        .log-item {
-            background-color: #0f172a;
-            padding: 8px 10px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-right: 3px solid #38bdf8;
-        }
-        .late-badge { color: #ef4444; font-weight: bold; }
-        .early-badge { color: #f59e0b; font-weight: bold; }
-        textarea.form-control { height: 70px; resize: vertical; }
-        .delete-btn {
-            padding: 3px 6px;
-            font-size: 10px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            background-color: #ef4444;
-            color: white;
-        }
-        .filter-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            background-color: #0f172a;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Monzer - مُنذِر</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232dd4bf'/%3E%3Cstop offset='1' stop-color='%230f766e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23g)'/%3E%3Ccircle cx='256' cy='262' r='140' fill='none' stroke='white' stroke-width='30'/%3E%3Cpath d='M256 176v90l62 40' fill='none' stroke='white' stroke-width='30' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='380' cy='132' r='42' fill='%23fbbf24' stroke='%230f766e' stroke-width='14'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--pr:#0f766e;--pr-hover:#115e59;--prt:#ffffff;
+  --bd:#e2e8f0;--wr:#dc2626;--wb:#fef2f2;--ok:#16a34a;--okb:#f0fdf4;--info:#2563eb;--infob:#eff6ff;
+  --shadow:0 4px 12px -2px rgba(0,0,0,0.05), 0 2px 6px -1px rgba(0,0,0,0.03);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f172a;--card:#1e293b;--tx:#f8fafc;--mu:#94a3b8;--pr:#2dd4bf;--pr-hover:#14b8a6;--prt:#0f172a;
+    --bd:#334155;--wr:#f87171;--wb:#451a1a;--ok:#4ade80;--okb:#143823;--info:#60a5fa;--infob:#1e293b;
+    --shadow:0 4px 14px -2px rgba(0,0,0,0.3)
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f172a;--card:#1e293b;--tx:#f8fafc;--mu:#94a3b8;--pr:#2dd4bf;--pr-hover:#14b8a6;--prt:#0f172a;
+  --bd:#334155;--wr:#f87171;--wb:#451a1a;--ok:#4ade80;--okb:#143823;--info:#60a5fa;--infob:#1e293b;
+  --shadow:0 4px 14px -2px rgba(0,0,0,0.3)
+}
+*{box-sizing:border-box;transition:background-color .2s,border-color .2s}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;-webkit-tap-highlight-color:transparent}
+main{padding:16px 14px 100px;max-width:640px;margin:auto}
+.brand-header{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:44px;height:44px;border-radius:12px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15))}
+.brand b{font-size:22px;letter-spacing:.3px;color:var(--tx)}
+.theme-toggle{background:transparent;border:1px solid var(--bd);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tx);margin:0}
+h1{font-size:22px;margin:4px 0 2px;font-weight:800}
+h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:6px;color:var(--tx)}
+.sub{color:var(--mu);font-size:13px;margin-bottom:12px;line-height:1.4}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:130px}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px;font-weight:600}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--pr);box-shadow:0 0 0 3px rgba(45,212,191,0.15)}
+button{font:inherit;border:0;border-radius:12px;padding:13px 16px;background:var(--pr);color:var(--prt);font-weight:700;width:100%;margin-top:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+button:active{transform:scale(0.98)}
+button.sec{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+button.x{width:auto;margin:0;padding:6px 12px;background:transparent;color:var(--wr);border:1px solid var(--bd);font-size:13px;font-weight:500}
+.big{font-size:24px;font-weight:800;color:var(--pr)}
+.warn{background:var(--wb);color:var(--wr);border:1px solid var(--wr);border-radius:14px;padding:14px;margin-bottom:14px;font-weight:700;display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+.bd{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;font-weight:700}
+.bd.w{background:var(--wb);color:var(--wr)}
+.bd.o{background:var(--okb);color:var(--ok)}
+.bd.i{background:var(--infob);color:var(--info)}
+.li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--bd);font-size:14px}
+.li:first-of-type{border-top:0}
+.kv{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px;border-bottom:1px dashed var(--bd)}
+.kv:last-child{border-bottom:0}
+.kv b{font-weight:700}
+.bar{height:10px;background:var(--bd);border-radius:10px;overflow:hidden;margin:6px 0 12px}
+.bar i{display:block;height:100%;background:var(--pr);border-radius:10px;transition:width 0.4s ease}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,0.05)}
+nav a{flex:1;text-align:center;padding:10px 2px 6px;font-size:10px;color:var(--mu);cursor:pointer;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav a span{font-size:18px;line-height:1}
+nav a.on{color:var(--pr);font-weight:800}
+.empty{color:var(--mu);font-size:14px;padding:12px 0;text-align:center}
+</style>
 </head>
 <body>
-
-    <div class="main-container">
-        <div class="header-title">
-            <span>⚖️</span> MONZER – قانون العمل 14 لسنة 2025
-        </div>
-        <div class="sub-header">إضافي نهاري (+35%)، ليلي (+70%) | المادة 121 (راحة أسبوعية) والمادة 129 (أعياد رسمية)</div>
-
-        <!-- 1. تبويب الحضور والانصراف -->
-        <div id="tab-attendance" class="tab-content active">
-            <div class="card">
-                <div class="card-title">📍 تسجيل الحضور والانصراف اليومي</div>
-                <div class="form-group">
-                    <label>تاريخ اليوم:</label>
-                    <input type="date" id="attDate" class="form-control">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>وقت الحضور:</label>
-                        <input type="time" id="manualInTime" class="form-control" value="07:30">
-                    </div>
-                    <div class="form-group">
-                        <label>وقت الانصراف:</label>
-                        <input type="time" id="manualOutTime" class="form-control" value="15:50">
-                    </div>
-                </div>
-                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">
-                    * الحضور المستهدف: 7:50 ص | الانصراف المستهدف: 3:50 م
-                </div>
-                <button class="btn btn-checkin" onclick="recordAttendanceIn()">
-                    🟢 تسجيل حضور
-                </button>
-                <button class="btn btn-checkout" onclick="recordAttendanceOut()">
-                    🔴 تسجيل انصراف
-                </button>
-            </div>
-
-            <div class="card">
-                <div class="card-title">🌙 تسجيل السهر والعمل الإضافي (قانون 14 لسنة 2025)</div>
-                <div class="form-group">
-                    <label>تاريخ السهر الإضافي:</label>
-                    <input type="date" id="overtimeDate" class="form-control">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>بداية السهر:</label>
-                        <input type="time" id="overtimeStartTime" class="form-control" value="16:00">
-                    </div>
-                    <div class="form-group">
-                        <label>نهاية السهر:</label>
-                        <input type="time" id="overtimeEndTime" class="form-control" value="19:00">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>نوع السهر (وفق توقيت القانون):</label>
-                    <select id="overtimeType" class="form-control">
-                        <option value="day">إضافي نهاري (+35% على أجر الساعة)</option>
-                        <option value="night">إضافي ليلي (+70% على أجر الساعة)</option>
-                    </select>
-                </div>
-                <button class="btn btn-overtime" onclick="recordOvertime()">
-                    🟣 تسجيل ساعات السهر الإضافي
-                </button>
-            </div>
-        </div>
-
-        <!-- 2. تبويب العطلات والراحة الأسبوعية (المادة 121 و 129) -->
-        <div id="tab-holidays" class="tab-content">
-            <div class="card">
-                <div class="card-title">🎉 العمل في العطلات (المادة 121 و 129)</div>
-                <div class="form-group">
-                    <label>تاريخ العمل (يتم الفحص الفوري للجمعة والسبت):</label>
-                    <input type="date" id="holidayWorkDate" class="form-control" onchange="onHolidayDateSelected()">
-                </div>
-                <div class="form-group">
-                    <label>نوع يوم العمل:</label>
-                    <select id="holidayCategory" class="form-control">
-                        <option value="جمعة">عمل يوم الراحة الأسبوعية - جمعة (مادة 121: أجر تعويضي + راحة بديلة)</option>
-                        <option value="سبت">عمل يوم الراحة الأسبوعية - سبت (مادة 121: أجر تعويضي + راحة بديلة)</option>
-                        <option value="عيد رسمي">عمل عيد رسمي (مادة 129: مثلي الأجر أو أجر وعوض كتابي)</option>
-                    </select>
-                </div>
-                <div style="font-size: 11px; color: #38bdf8; margin-bottom: 10px;" id="holidayAutoMsg">
-                    * ملاحظة: يتم إضافة يوم بدل تلقائياً لرصيد البدلات عند العمل في الجمعة أو السبت وفق المادة 121.
-                </div>
-                
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="hasOvertimeHoliday" onchange="toggleHolidayOvertimeInput()"> يتضمن ساعات سهر إضافية بالعطلة
-                    </label>
-                </div>
-                <div id="holidayOvertimeBox" style="display:none;">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>من الساعة:</label>
-                            <input type="time" id="holOtStart" class="form-control" value="16:00">
-                        </div>
-                        <div class="form-group">
-                            <label>إلى الساعة:</label>
-                            <input type="time" id="holOtEnd" class="form-control" value="19:00">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>نوع السهر بالعطلة:</label>
-                        <select id="holOtType" class="form-control">
-                            <option value="day">نهاري (+35%)</option>
-                            <option value="night">ليلي (+70%)</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn btn-friday" onclick="recordHolidayWorkCustom()">
-                    🟠 اعتماد وتسجيل عمل العطلة ومستحقاتها
-                </button>
-            </div>
-        </div>
-
-        <!-- 3. تبويب الإجازات والتنبيهات -->
-        <div id="tab-leaves" class="tab-content">
-            <div id="quarterWarningBanner" class="alert-banner">
-                ⚠️ <b>تنبيه تحذيري:</b> تجاوزت 9 أيام إجازة (السنوية والعارضة فقط) خلال الربع الحالي!
-            </div>
-
-            <div class="card">
-                <div class="card-title">🏖️ تسجيل إجازة (يوم كامل أو نصف يوم)</div>
-                <div class="form-group">
-                    <label>نوع الإجازة:</label>
-                    <select id="leaveType" class="form-control">
-                        <option value="سنوية">إجازة سنوية</option>
-                        <option value="عارضة">إجازة عارضة</option>
-                        <option value="مرضية">إجازة مرضية (مستثناة من التحذير)</option>
-                        <option value="بدل">إجازة بدل راحة (تخصم تلقائياً من رصيد البدل)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>فترة الإجازة:</label>
-                    <select id="leaveDurationType" class="form-control" onchange="toggleLeaveDurationFields()">
-                        <option value="full">يوم كامل (أو فترة بين تاريخين)</option>
-                        <option value="half">نصف يوم (0.5 يوم)</option>
-                    </select>
-                </div>
-                
-                <div id="fullDayLeaveBox">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>من تاريخ:</label>
-                            <input type="date" id="leaveStartDate" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>إلى تاريخ:</label>
-                            <input type="date" id="leaveEndDate" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="excludeWeekends" checked> استثناء الجمعة والسبت من خصم الرصيد
-                        </label>
-                    </div>
-                </div>
-
-                <div id="halfDayLeaveBox" style="display:none;">
-                    <div class="form-group">
-                        <label>تاريخ النصف يوم:</label>
-                        <input type="date" id="leaveSingleDate" class="form-control">
-                    </div>
-                </div>
-
-                <button class="btn btn-holiday" onclick="submitLeave()">
-                    🔵 خصم وتسجيل الإجازة
-                </button>
-            </div>
-
-            <div class="card">
-                <div class="card-title">📊 أرصدة الإجازات للسنة النشطة (<span id="activeYearSpan">2026</span>)</div>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-label">سنوية متبقية</div>
-                        <div class="stat-value" id="balAnnual">30 يوم</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">عارضة متبقية</div>
-                        <div class="stat-value" id="balCasual">7 أيام</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">مرضية متبقية</div>
-                        <div class="stat-value" id="balSick">10 أيام</div>
-                    </div>
-                    <div class="stat-box" style="border-color: #38bdf8;">
-                        <div class="stat-label">بدل متبقية (تجميع تلقائي)</div>
-                        <div class="stat-value" id="balReplacement" style="color: #38bdf8;">0 يوم</div>
-                    </div>
-                </div>
-
-                <div style="font-size: 11px; color: #94a3b8; margin: 6px 0;">
-                    * ملاحظة: 9 أيام تحسب ربع سنوى (يناير-مارس، أبريل-يونيو، يوليو-سبتمبر، أكتوبر-ديسمبر) ولا يحتسب فيها البدل ولا المرضي.
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-label">مستهلك الشهر الحالي</div>
-                        <div class="stat-value" id="usedMonth">0 يوم</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">مستهلك الربع الحالي (سنوية وعارضة فقط)</div>
-                        <div class="stat-value" id="usedQuarter" style="color: #f59e0b;">0 يوم</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. تبويب التقارير (وفق قانون العمل 14 لسنة 2025) -->
-        <div id="tab-report" class="tab-content">
-            <div class="card">
-                <div class="card-title">
-                    <span>📊 التقارير والملخصات الدورية (قانون 14 لسنة 2025)</span>
-                </div>
-                <div class="filter-bar">
-                    <div style="flex:1;">
-                        <label style="font-size:11px; color:#94a3b8;">عرض لعام:</label>
-                        <select id="reportYearSelect" class="form-control" onchange="calculateReport()">
-                            <option value="2026">2026</option>
-                            <option value="2027">2027</option>
-                        </select>
-                    </div>
-                    <div style="flex:1;">
-                        <label style="font-size:11px; color:#94a3b8;">نوع الفترة:</label>
-                        <select id="reportPeriodType" class="form-control" onchange="calculateReport()">
-                            <option value="monthly">شهري</option>
-                            <option value="quarterly">ربع سنوي (بالتقويم)</option>
-                            <option value="yearly">سنوي كامل</option>
-                        </select>
-                    </div>
-                    <div style="flex:1;" id="periodDetailBox">
-                        <label style="font-size:11px; color:#94a3b8;">اختر الفترة:</label>
-                        <select id="reportPeriodValue" class="form-control" onchange="calculateReport()">
-                        </select>
-                    </div>
-                </div>
-
-                <div style="font-size: 12px; color: #38bdf8; font-weight: bold; margin-bottom: 6px;">
-                    1. الحضور والانصراف والسهر الإضافي:
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-label">أيام الحضور</div>
-                        <div class="stat-value" id="repAttDays">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">التأخير (بعد 7:50)</div>
-                        <div class="stat-value" id="repLateCount" style="color:#ef4444;">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">ساعات إضافي نهاري (+35%)</div>
-                        <div class="stat-value" id="repDayOtHours" style="color:#38bdf8;">0 س</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">ساعات إضافي ليلي (+70%)</div>
-                        <div class="stat-value" id="repNightOtHours" style="color:#8b5cf6;">0 س</div>
-                    </div>
-                </div>
-
-                <div style="font-size: 12px; color: #10b981; font-weight: bold; margin: 10px 0 6px 0;">
-                    2. العطلات وأيام الراحة البديلة (مادة 121 و 129):
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-label">أيام عمل الجمعة (راحة أسبوعية)</div>
-                        <div class="stat-value" id="repFridayCount" style="color:#f59e0b;">0 يوم</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">أيام عمل السبت (راحة أسبوعية)</div>
-                        <div class="stat-value" id="repSaturdayCount" style="color:#d97706;">0 يوم</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">أيام عمل العطلات الرسمية</div>
-                        <div class="stat-value" id="repHolidayCount" style="color:#06b6d4;">0 يوم</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">أيام الراحة البديلة (بدل مكتسب)</div>
-                        <div class="stat-value" id="repReplacementEarned" style="color:#10b981;">0 يوم</div>
-                    </div>
-                </div>
-
-                <div style="background-color: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #38bdf8; text-align: center; margin-top: 10px;">
-                    <div style="font-size: 11px; color: #94a3b8;">إجمالي المستحق المالي التقديري (قانون 14 لسنة 2025):</div>
-                    <div id="totalEstimatedExtra" style="font-size: 18px; font-weight: bold; color: #10b981; margin-top: 4px;">0 ج.م</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">📋 السجل التاريخي للسجلات المخزنة</div>
-                <ul id="logList" class="log-list">
-                    <li class="log-item"><span>لا يوجد سجلات حتى الآن...</span></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 5. تبويب الإعدادات -->
-        <div id="tab-settings" class="tab-content">
-            <div class="card">
-                <div class="card-title">⚙️ قواعد الأجر والإعدادات وفق قانون 14 لسنة 2025</div>
-                <div class="form-group">
-                    <label>الراتب الأساسي الشهري (ج.م):</label>
-                    <input type="number" id="cfgSalary" class="form-control" value="6000" onchange="saveSettings()">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>معامل إضافي نهاري (افتراضي 1.35):</label>
-                        <input type="number" step="0.05" id="cfgDayOtMult" class="form-control" value="1.35" onchange="saveSettings()">
-                    </div>
-                    <div class="form-group">
-                        <label>معامل إضافي ليلي (افتراضي 1.70):</label>
-                        <input type="number" step="0.05" id="cfgNightOtMult" class="form-control" value="1.70" onchange="saveSettings()">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>معامل عمل العطلات الرسمية (مادة 129):</label>
-                        <input type="number" step="0.5" id="cfgHolidayMult" class="form-control" value="2.0" onchange="saveSettings()">
-                    </div>
-                    <div class="form-group">
-                        <label>معامل أجر يوم الراحة الأسبوعية (مادة 121):</label>
-                        <input type="number" step="0.5" id="cfgWeekendMult" class="form-control" value="1.0" onchange="saveSettings()">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>حد تحذير الإجازات (أيام / ربع سنة):</label>
-                    <input type="number" id="cfgWarningLimit" class="form-control" value="9" onchange="saveSettings()">
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">🗓️ إعدادات أرصدة السنوات</div>
-                <div class="form-group">
-                    <label>اختر السنة لتعديل رصيدها السنوي كاملًا:</label>
-                    <select id="cfgYearSelect" class="form-control" onchange="loadYearBalancesForEdit()">
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>الرصيد السنوي الكامل:</label>
-                        <input type="number" id="cfgAnnualBal" class="form-control" value="30">
-                    </div>
-                    <div class="form-group">
-                        <label>الرصيد العارض:</label>
-                        <input type="number" id="cfgCasualBal" class="form-control" value="7">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>الرصيد المرضي:</label>
-                        <input type="number" id="cfgSickBal" class="form-control" value="10">
-                    </div>
-                    <div class="form-group">
-                        <label>رصيد البدل الابتدائي:</label>
-                        <input type="number" id="cfgRepBal" class="form-control" value="0">
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="saveYearBalances()">
-                    💾 حفظ أرصدة السنة المحددة
-                </button>
-            </div>
-        </div>
-
-        <!-- 6. تبويب النسخ الاحتياطي -->
-        <div id="tab-backup" class="tab-content">
-            <div class="card">
-                <div class="card-title">💾 النسخ الاحتياطي والاستعادة</div>
-                <button class="btn btn-secondary" onclick="exportBackupFile()">
-                    📤 تصدير نسخة احتياطية (ملف JSON)
-                </button>
-                <button class="btn btn-secondary" onclick="copyBackupText()">
-                    📋 نسخ كود البيانات للحافظة
-                </button>
-                <hr style="border-color: #334155; margin: 12px 0;">
-                <div class="form-group">
-                    <label>استعادة البيانات من نص احتياطي:</label>
-                    <textarea id="backupText" class="form-control" placeholder="ألصق نص النسخة الاحتياطية هنا..."></textarea>
-                </div>
-                <button class="btn btn-secondary" onclick="importBackupText()">
-                    📥 استعادة البيانات الآن
-                </button>
-                <button class="btn btn-danger" style="margin-top: 14px;" onclick="clearAllData()">
-                    🗑️ إعادة ضبط وتصفير التطبيق
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- شريط التنقل السفلي -->
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('attendance', this)">
-            <span>📍</span>الحضور
-        </button>
-        <button class="nav-item" onclick="switchTab('holidays', this)">
-            <span>🎉</span>العطلات
-        </button>
-        <button class="nav-item" onclick="switchTab('leaves', this)">
-            <span>🏖️</span>الإجازات
-        </button>
-        <button class="nav-item" onclick="switchTab('report', this)">
-            <span>📊</span>التقارير
-        </button>
-        <button class="nav-item" onclick="switchTab('settings', this)">
-            <span>⚙️</span>الإعدادات
-        </button>
-        <button class="nav-item" onclick="switchTab('backup', this)">
-            <span>💾</span>النسخ
-        </button>
-    </div>
-
-    <script>
-        const START_DATE = "2026-01-01";
-
-        let defaultAppData = {
-            version: "14.0",
-            records: [],
-            settings: {
-                salary: 6000,
-                dayOtMult: 1.35,
-                nightOtMult: 1.70,
-                holidayMult: 2.0,
-                weekendMult: 1.0,
-                warningLimit: 9
-            },
-            yearsBalances: {
-                "2026": { annual: 30, casual: 7, sick: 10, replacement: 0 },
-                "2027": { annual: 30, casual: 7, sick: 10, replacement: 0 }
-            }
-        };
-
-        let appData = JSON.parse(localStorage.getItem('monzer_app_data_v14')) || defaultAppData;
-        if (!appData.yearsBalances) appData.yearsBalances = defaultAppData.yearsBalances;
-        if (!appData.settings) appData.settings = defaultAppData.settings;
-
-        function saveData() {
-            localStorage.setItem('monzer_app_data_v14', JSON.stringify(appData));
-            updateUI();
-        }
-
-        function switchTab(tabId, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabId).classList.add('active');
-            btnElement.classList.add('active');
-
-            if (tabId === 'report') calculateReport();
-        }
-
-        function recordAttendanceIn() {
-            const dateStr = document.getElementById('attDate').value || new Date().toISOString().split('T')[0];
-            if (dateStr < START_DATE) {
-                alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                return;
-            }
-            const inTime = document.getElementById('manualInTime').value || "07:30";
-            let isLate = inTime > "07:50";
-
-            appData.records.push({
-                id: Date.now(),
-                type: 'حضور',
-                date: dateStr,
-                time: inTime,
-                isLate: isLate
-            });
-
-            alert(isLate ? '⚠️ تم تسجيل الحضور (متأخر بعد 7:50 ص)' : '🟢 تم تسجيل الحضور في الموعد!');
-            saveData();
-        }
-
-        function recordAttendanceOut() {
-            const dateStr = document.getElementById('attDate').value || new Date().toISOString().split('T')[0];
-            if (dateStr < START_DATE) {
-                alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                return;
-            }
-            const outTime = document.getElementById('manualOutTime').value || "15:50";
-            let isEarly = outTime < "15:50";
-
-            appData.records.push({
-                id: Date.now(),
-                type: 'انصراف',
-                date: dateStr,
-                time: outTime,
-                isEarly: isEarly
-            });
-
-            alert(isEarly ? '⚠️ تم تسجيل الانصراف (مبكر قبل 3:50 عصراً)' : '🔴 تم تسجيل الانصراف بنجاح!');
-            saveData();
-        }
-
-        function recordOvertime() {
-            const dateVal = document.getElementById('overtimeDate').value || new Date().toISOString().split('T')[0];
-            if (dateVal < START_DATE) {
-                alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                return;
-            }
-            const startTimeStr = document.getElementById('overtimeStartTime').value;
-            const endTimeStr = document.getElementById('overtimeEndTime').value;
-            const otType = document.getElementById('overtimeType').value; // 'day' أو 'night'
-            
-            const [startHour, startMin] = startTimeStr.split(':').map(Number);
-            const [endHour, endMin] = endTimeStr.split(':').map(Number);
-            
-            let startTotalMinutes = startHour * 60 + startMin;
-            let endTotalMinutes = endHour * 60 + endMin;
-
-            if (endTotalMinutes < startTotalMinutes) endTotalMinutes += 24 * 60;
-            const hours = (endTotalMinutes - startTotalMinutes) / 60;
-
-            if (hours <= 0) {
-                alert('يرجى تحديد وقت نهاية بعد بداية السهر.');
-                return;
-            }
-
-            appData.records.push({
-                id: Date.now(),
-                type: 'سهر',
-                otType: otType, // 'day' (+35%) أو 'night' (+70%)
-                date: dateVal,
-                startTime: startTimeStr,
-                endTime: endTimeStr,
-                hours: hours
-            });
-
-            let typeName = otType === 'day' ? 'نهاري (+35%)' : 'ليلي (+70%)';
-            alert(`🟣 تم تسجيل سهر إضافي ${typeName} بمقدار ${hours.toFixed(1)} ساعة`);
-            saveData();
-        }
-
-        function toggleHolidayOvertimeInput() {
-            const chk = document.getElementById('hasOvertimeHoliday').checked;
-            document.getElementById('holidayOvertimeBox').style.display = chk ? 'block' : 'none';
-        }
-
-        function onHolidayDateSelected() {
-            const dateVal = document.getElementById('holidayWorkDate').value;
-            if (!dateVal) return;
-            
-            if (dateVal < START_DATE) {
-                alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                return;
-            }
-
-            const dateObj = new Date(dateVal);
-            const dayOfWeek = dateObj.getDay(); // 5 = الجمعة, 6 = السبت
-            const catSelect = document.getElementById('holidayCategory');
-            const msgBox = document.getElementById('holidayAutoMsg');
-
-            if (dayOfWeek === 5) {
-                catSelect.value = 'جمعة';
-                msgBox.innerHTML = '✅ <b>المادة 121:</b> يوافق يوم <b>الجمعة</b> (أجر تعويضي + راحة بديلة تضاف تلقائياً).';
-            } else if (dayOfWeek === 6) {
-                catSelect.value = 'سبت';
-                msgBox.innerHTML = '✅ <b>المادة 121:</b> يوافق يوم <b>السبت</b> (أجر تعويضي + راحة بديلة تضاف تلقائياً).';
-            } else {
-                catSelect.value = 'عيد رسمي';
-                msgBox.innerHTML = '⚖️ <b>المادة 129:</b> عمل بعطلة رسمية (مثلي الأجر أو أجر وعوض كتابي).';
-            }
-        }
-
-        function recordHolidayWorkCustom() {
-            const dateVal = document.getElementById('holidayWorkDate').value;
-            if (!dateVal) {
-                alert('يرجى اختيار تاريخ العمل أولاً من التقويم.');
-                return;
-            }
-            if (dateVal < START_DATE) {
-                alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                return;
-            }
-            
-            const category = document.getElementById('holidayCategory').value;
-            const hasOvertime = document.getElementById('hasOvertimeHoliday').checked;
-
-            let otHours = 0;
-            let holOtType = 'day';
-            if (hasOvertime) {
-                holOtType = document.getElementById('holOtType').value;
-                const sTime = document.getElementById('holOtStart').value;
-                const eTime = document.getElementById('holOtEnd').value;
-                const [sH, sM] = sTime.split(':').map(Number);
-                const [eH, eM] = eTime.split(':').map(Number);
-                let startM = sH * 60 + sM;
-                let endM = eH * 60 + eM;
-                if (endM < startM) endM += 24 * 60;
-                otHours = (endM - startM) / 60;
-
-                appData.records.push({
-                    id: Date.now() + 1,
-                    type: 'سهر',
-                    otType: holOtType,
-                    date: dateVal,
-                    startTime: sTime,
-                    endTime: eTime,
-                    hours: otHours
-                });
-            }
-
-            appData.records.push({
-                id: Date.now(),
-                type: 'عمل_عطلة',
-                category: category,
-                date: dateVal,
-                hasOvertime: hasOvertime,
-                otHours: otHours,
-                holOtType: holOtType
-            });
-
-            let addMsg = (category === 'جمعة' || category === 'سبت') ? ' (المادة 121: أجر تعويضي + يوم بدل راحة تضاف تلقائياً).' : ' (المادة 129: أجر إضافي للعيد الرسمي).';
-            alert(`🟠 تم اعتماد وتسجيل عمل العطلة (${category})${addMsg}`);
-            saveData();
-        }
-
-        function toggleLeaveDurationFields() {
-            const durationType = document.getElementById('leaveDurationType').value;
-            if (durationType === 'half') {
-                document.getElementById('fullDayLeaveBox').style.display = 'none';
-                document.getElementById('halfDayLeaveBox').style.display = 'block';
-            } else {
-                document.getElementById('fullDayLeaveBox').style.display = 'block';
-                document.getElementById('halfDayLeaveBox').style.display = 'none';
-            }
-        }
-
-        function submitLeave() {
-            const type = document.getElementById('leaveType').value;
-            const durationType = document.getElementById('leaveDurationType').value;
-            
-            let daysCount = 0;
-            let targetDate = "";
-
-            if (durationType === 'half') {
-                targetDate = document.getElementById('leaveSingleDate').value;
-                if (!targetDate) {
-                    alert('يرجى تحديد تاريخ النصف يوم.');
-                    return;
-                }
-                if (targetDate < START_DATE) {
-                    alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                    return;
-                }
-                daysCount = 0.5;
-            } else {
-                const startVal = document.getElementById('leaveStartDate').value;
-                const endVal = document.getElementById('leaveEndDate').value;
-                const excludeWeekends = document.getElementById('excludeWeekends').checked;
-
-                if (!startVal || !endVal) {
-                    alert('يرجى تحديد تواريخ الإجازة.');
-                    return;
-                }
-                if (startVal < START_DATE) {
-                    alert('تنبيه: بداية حساب السجلات هي 1 يناير 2026.');
-                    return;
-                }
-
-                const start = new Date(startVal);
-                const end = new Date(endVal);
-
-                if (end < start) {
-                    alert('تاريخ النهاية يجب أن يكون بعد البداية.');
-                    return;
-                }
-
-                let cur = new Date(start);
-                while (cur <= end) {
-                    const dayOfWeek = cur.getDay(); // 5 = الجمعة, 6 = السبت
-                    if (!excludeWeekends || (dayOfWeek !== 5 && dayOfWeek !== 6)) {
-                        daysCount += 1;
-                    }
-                    cur.setDate(cur.getDate() + 1);
-                }
-                targetDate = startVal;
-            }
-
-            if (daysCount <= 0) {
-                alert('عدد أيام الإجازة يجب أن يكون أكبر من صفر.');
-                return;
-            }
-
-            appData.records.push({
-                id: Date.now(),
-                type: 'إجازة',
-                leaveType: type,
-                duration: durationType,
-                startDate: targetDate,
-                endDate: durationType === 'half' ? targetDate : document.getElementById('leaveEndDate').value,
-                days: daysCount
-            });
-
-            alert(`🔵 تم خصم وتسجيل إجازة ${type} بمقدار ${daysCount} يوم`);
-            saveData();
-        }
-
-        function deleteRecord(id) {
-            if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
-                appData.records = appData.records.filter(r => r.id !== id);
-                saveData();
-            }
-        }
-
-        function populateReportPeriodOptions() {
-            const pType = document.getElementById('reportPeriodType').value;
-            const pValSelect = document.getElementById('reportPeriodValue');
-            pValSelect.innerHTML = '';
-
-            if (pType === 'monthly') {
-                const months = [
-                    "يناير (1)", "فبراير (2)", "مارس (3)", "أبريل (4)",
-                    "مايو (5)", "يونيو (6)", "يوليو (7)", "أغسطس (8)",
-                    "سبتمبر (9)", "أكتوبر (10)", "نوفمبر (11)", "ديسمبر (12)"
-                ];
-                months.forEach((m, idx) => {
-                    const opt = document.createElement('option');
-                    opt.value = (idx + 1).toString().padStart(2, '0');
-                    opt.innerText = m;
-                    pValSelect.appendChild(opt);
-                });
-                document.getElementById('periodDetailBox').style.display = 'block';
-            } else if (pType === 'quarterly') {
-                const quarters = [
-                    { val: "Q1", label: "الربع 1: يناير – مارس" },
-                    { val: "Q2", label: "الربع 2: أبريل – يونيو" },
-                    { val: "Q3", label: "الربع 3: يوليو – سبتمبر" },
-                    { val: "Q4", label: "الربع 4: أكتوبر – ديسمبر" }
-                ];
-                quarters.forEach(q => {
-                    const opt = document.createElement('option');
-                    opt.value = q.val;
-                    opt.innerText = q.label;
-                    pValSelect.appendChild(opt);
-                });
-                document.getElementById('periodDetailBox').style.display = 'block';
-            } else {
-                document.getElementById('periodDetailBox').style.display = 'none';
-            }
-        }
-
-        function calculateReport() {
-            populateReportPeriodOptions();
-
-            const selYear = document.getElementById('reportYearSelect').value;
-            const pType = document.getElementById('reportPeriodType').value;
-            const pVal = document.getElementById('reportPeriodValue').value;
-
-            const salary = parseFloat(appData.settings.salary) || 6000;
-            const dayOtMult = parseFloat(appData.settings.dayOtMult) || 1.35;
-            const nightOtMult = parseFloat(appData.settings.nightOtMult) || 1.70;
-            const holidayMult = parseFloat(appData.settings.holidayMult) || 2.0;
-            const weekendMult = parseFloat(appData.settings.weekendMult) || 1.0;
-
-            const yearRecords = appData.records.filter(r => {
-                const dateStr = r.date || r.startDate;
-                return dateStr >= START_DATE && dateStr.startsWith(selYear);
-            });
-
-            let filteredRecords = yearRecords.filter(r => {
-                const dateStr = r.date || r.startDate;
-                const month = dateStr.slice(5, 7);
-
-                if (pType === 'monthly') {
-                    return month === pVal;
-                } else if (pType === 'quarterly') {
-                    if (pVal === 'Q1') return ["01", "02", "03"].includes(month);
-                    if (pVal === 'Q2') return ["04", "05", "06"].includes(month);
-                    if (pVal === 'Q3') return ["07", "08", "09"].includes(month);
-                    if (pVal === 'Q4') return ["10", "11", "12"].includes(month);
-                }
-                return true;
-            });
-
-            let attDays = 0, lateCount = 0;
-            let dayOtHours = 0, nightOtHours = 0;
-            let fridayCount = 0, saturdayCount = 0, holidayCount = 0;
-
-            filteredRecords.forEach(r => {
-                if (r.type === 'حضور') { attDays++; if (r.isLate) lateCount++; }
-                if (r.type === 'سهر') {
-                    if (r.otType === 'night') nightOtHours += r.hours;
-                    else dayOtHours += r.hours;
-                }
-                if (r.type === 'عمل_عطلة') {
-                    if (r.category === 'جمعة') fridayCount++;
-                    if (r.category === 'سبت') saturdayCount++;
-                    if (r.category === 'عيد رسمي') holidayCount++;
-                }
-            });
-
-            const hourlyRate = salary / 240;
-            const dailyRate = salary / 30;
-
-            const dayOtMoney = dayOtHours * hourlyRate * dayOtMult;
-            const nightOtMoney = nightOtHours * hourlyRate * nightOtMult;
-            const fridayMoney = fridayCount * dailyRate * weekendMult;
-            const saturdayMoney = saturdayCount * dailyRate * weekendMult;
-            const holidayMoney = holidayCount * dailyRate * holidayMult;
-
-            const totalExtra = dayOtMoney + nightOtMoney + fridayMoney + saturdayMoney + holidayMoney;
-            const totalReplacementEarned = fridayCount + saturdayCount;
-
-            document.getElementById('repAttDays').innerText = attDays;
-            document.getElementById('repLateCount').innerText = lateCount;
-            document.getElementById('repDayOtHours').innerText = dayOtHours.toFixed(1) + ' س';
-            document.getElementById('repNightOtHours').innerText = nightOtHours.toFixed(1) + ' س';
-
-            document.getElementById('repFridayCount').innerText = fridayCount + ' يوم';
-            document.getElementById('repSaturdayCount').innerText = saturdayCount + ' يوم';
-            document.getElementById('repHolidayCount').innerText = holidayCount + ' يوم';
-            document.getElementById('repReplacementEarned').innerText = totalReplacementEarned + ' يوم';
-
-            document.getElementById('totalEstimatedExtra').innerText = totalExtra.toFixed(0) + ' ج.م';
-
-            calculateLeaveBalancesAndWarnings(selYear);
-        }
-
-        function calculateLeaveBalancesAndWarnings(yearStr) {
-            const yearData = appData.yearsBalances[yearStr] || { annual: 30, casual: 7, sick: 10, replacement: 0 };
-
-            let usedAnnual = 0, usedCasual = 0, usedSick = 0, usedReplacement = 0;
-            let usedCurrentMonth = 0, usedCurrentQuarter = 0;
-
-            const now = new Date();
-            const currYear = now.getFullYear().toString();
-            const currMonthStr = (now.getMonth() + 1).toString().padStart(2, '0');
-            const currQuarter = Math.floor(now.getMonth() / 3) + 1;
-
-            appData.records.forEach(r => {
-                if (r.type === 'إجازة' && r.startDate >= START_DATE && r.startDate.startsWith(yearStr)) {
-                    if (r.leaveType === 'سنوية') usedAnnual += r.days;
-                    if (r.leaveType === 'عارضة') usedCasual += r.days;
-                    if (r.leaveType === 'مرضية') usedSick += r.days;
-                    if (r.leaveType === 'بدل') usedReplacement += r.days;
-
-                    const m = parseInt(r.startDate.slice(5, 7));
-                    const q = Math.floor((m - 1) / 3) + 1;
-
-                    if (yearStr === currYear) {
-                        if (r.startDate.slice(5, 7) === currMonthStr) {
-                            if (r.leaveType === 'سنوية' || r.leaveType === 'عارضة') {
-                                usedCurrentMonth += r.days;
-                            }
-                        }
-                        if (q === currQuarter) {
-                            if (r.leaveType === 'سنوية' || r.leaveType === 'عارضة') {
-                                usedCurrentQuarter += r.days;
-                            }
-                        }
-                    }
-                }
-            });
-
-            // تجميع رصيد البدل تلقائياً وفق المادة 121 (عمل الجمعة أو السبت)
-            let earnedReplacement = 0;
-            appData.records.forEach(r => {
-                if (r.type === 'عمل_عطلة' && r.date >= START_DATE && r.date.startsWith(yearStr)) {
-                    if (r.category === 'جمعة' || r.category === 'سبت') {
-                        earnedReplacement += 1;
-                    }
-                }
-            });
-
-            const balAnn = yearData.annual - usedAnnual;
-            const balCas = yearData.casual - usedCasual;
-            const balSck = yearData.sick - usedSick;
-            const balRep = (yearData.replacement + earnedReplacement) - usedReplacement;
-
-            document.getElementById('balAnnual').innerText = balAnn + ' يوم';
-            document.getElementById('balCasual').innerText = balCas + ' يوم';
-            document.getElementById('balSick').innerText = balSck + ' يوم';
-            document.getElementById('balReplacement').innerText = balRep + ' يوم';
-
-            document.getElementById('usedMonth').innerText = usedCurrentMonth + ' يوم';
-            document.getElementById('usedQuarter').innerText = usedCurrentQuarter + ' يوم';
-
-            const warningLimit = parseFloat(appData.settings.warningLimit) || 9;
-            const banner = document.getElementById('quarterWarningBanner');
-            if (usedCurrentQuarter > warningLimit) {
-                banner.style.display = 'flex';
-            } else {
-                banner.style.display = 'none';
-            }
-
-            document.getElementById('activeYearSpan').innerText = yearStr;
-        }
-
-        function loadSettingsToUI() {
-            const s = appData.settings;
-            document.getElementById('cfgSalary').value = s.salary;
-            document.getElementById('cfgDayOtMult').value = s.dayOtMult;
-            document.getElementById('cfgNightOtMult').value = s.nightOtMult;
-            document.getElementById('cfgHolidayMult').value = s.holidayMult;
-            document.getElementById('cfgWeekendMult').value = s.weekendMult;
-            document.getElementById('cfgWarningLimit').value = s.warningLimit;
-
-            loadYearBalancesForEdit();
-        }
-
-        function saveSettings() {
-            appData.settings.salary = parseFloat(document.getElementById('cfgSalary').value) || 6000;
-            appData.settings.dayOtMult = parseFloat(document.getElementById('cfgDayOtMult').value) || 1.35;
-            appData.settings.nightOtMult = parseFloat(document.getElementById('cfgNightOtMult').value) || 1.70;
-            appData.settings.holidayMult = parseFloat(document.getElementById('cfgHolidayMult').value) || 2.0;
-            appData.settings.weekendMult = parseFloat(document.getElementById('cfgWeekendMult').value) || 1.0;
-            appData.settings.warningLimit = parseFloat(document.getElementById('cfgWarningLimit').value) || 9;
-
-            saveData();
-        }
-
-        function loadYearBalancesForEdit() {
-            const yr = document.getElementById('cfgYearSelect').value;
-            const yData = appData.yearsBalances[yr] || { annual: 30, casual: 7, sick: 10, replacement: 0 };
-            document.getElementById('cfgAnnualBal').value = yData.annual;
-            document.getElementById('cfgCasualBal').value = yData.casual;
-            document.getElementById('cfgSickBal').value = yData.sick;
-            document.getElementById('cfgRepBal').value = yData.replacement;
-        }
-
-        function saveYearBalances() {
-            const yr = document.getElementById('cfgYearSelect').value;
-            appData.yearsBalances[yr] = {
-                annual: parseFloat(document.getElementById('cfgAnnualBal').value) || 30,
-                casual: parseFloat(document.getElementById('cfgCasualBal').value) || 7,
-                sick: parseFloat(document.getElementById('cfgSickBal').value) || 10,
-                replacement: parseFloat(document.getElementById('cfgRepBal').value) || 0
-            };
-            saveData();
-            alert(`✅ تم حفظ أرصدة سنة ${yr} بنجاح.`);
-        }
-
-        function exportBackupFile() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `MONZER_Law14_Backup_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
-        }
-
-        function copyBackupText() {
-            navigator.clipboard.writeText(JSON.stringify(appData));
-            alert('📋 تم نسخ بيانات التطبيق بالكامل للحافظة.');
-        }
-
-        function importBackupText() {
-            const txt = document.getElementById('backupText').value;
-            try {
-                const parsed = JSON.parse(txt);
-                if (parsed.records) {
-                    appData = parsed;
-                    saveData();
-                    alert('📥 تم استعادة بيانات التطبيق بنجاح!');
-                } else {
-                    alert('❌ كود النسخة الاحتياطية غير صحيح.');
-                }
-            } catch (e) {
-                alert('❌ تعذر استعادة البيانات.');
-            }
-        }
-
-        function clearAllData() {
-            if (confirm('هل أنت تأكد من مسح جميع البيانات وتصفير التطبيق؟')) {
-                localStorage.removeItem('monzer_app_data_v14');
-                appData = JSON.parse(JSON.stringify(defaultAppData));
-                saveData();
-            }
-        }
-
-        function updateUI() {
-            loadSettingsToUI();
-
-            const logList = document.getElementById('logList');
-            logList.innerHTML = '';
-
-            let sorted = [...appData.records].sort((a, b) => {
-                const dA = a.date || a.startDate;
-                const dB = b.date || b.startDate;
-                return dB.localeCompare(dA);
-            });
-
-            if (sorted.length === 0) {
-                logList.innerHTML = '<li class="log-item"><span>لا يوجد سجلات حتى الآن...</span></li>';
-            } else {
-                sorted.forEach(r => {
-                    const li = document.createElement('li');
-                    li.className = 'log-item';
-                    let txt = "";
-                    if (r.type === 'حضور') txt = `تسجيل حضور (${r.time}) ${r.isLate ? '<b class="late-badge">[متأخر]</b>' : ''}`;
-                    else if (r.type === 'انصراف') txt = `تسجيل انصراف (${r.time}) ${r.isEarly ? '<b class="early-badge">[انصراف مبكر]</b>' : ''}`;
-                    else if (r.type === 'سهر') {
-                        let tLabel = r.otType === 'night' ? 'ليلي +70%' : 'نهاري +35%';
-                        txt = `سهر إضافي (${tLabel}) - (${r.hours.toFixed(1)} س)`;
-                    }
-                    else if (r.type === 'عمل_عطلة') txt = `عمل عطلة (${r.category}) ${r.hasOvertime ? '+ سهر' : ''}`;
-                    else if (r.type === 'إجازة') txt = `إجازة ${r.leaveType} (${r.days} يوم) ${r.duration === 'half' ? '[نصف يوم]' : ''}`;
-
-                    li.innerHTML = `
-                        <div>
-                            <span>${txt}</span>
-                            <br><span style="color:#64748b; font-size:10px;">${r.date || r.startDate}</span>
-                        </div>
-                        <button class="delete-btn" onclick="deleteRecord(${r.id})">حذف</button>
-                    `;
-                    logList.appendChild(li);
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const defaultDate = todayStr < START_DATE ? START_DATE : todayStr;
-
-            document.getElementById('attDate').value = defaultDate;
-            document.getElementById('overtimeDate').value = defaultDate;
-            document.getElementById('leaveStartDate').value = defaultDate;
-            document.getElementById('leaveEndDate').value = defaultDate;
-            document.getElementById('leaveSingleDate').value = defaultDate;
-            document.getElementById('holidayWorkDate').value = defaultDate;
-
-            onHolidayDateSelected();
-            updateUI();
-        });
-    </script>
+<main id="app"></main>
+<nav id="nav"></nav>
+
+<script>
+var KEY = 'monzer_app_v4';
+var S = {
+  email: '',
+  salary: 0,
+  theme: 'auto',
+  att: {},
+  leaves: [],
+  ot: [],
+  work: [],
+  shifts: [],
+  ramadan: [],
+  shiftRates: { mid: 0, night: 0 },
+  ramadanOtRate: 0,
+  quota: { annual: 30, casual: 7, sick: 10 }
+};
+
+try {
+  var saved = localStorage.getItem(KEY);
+  if (saved) S = Object.assign(S, JSON.parse(saved));
+  if (!S.shifts) S.shifts = [];
+  if (!S.ramadan) S.ramadan = [];
+  if (!S.shiftRates) S.shiftRates = { mid: 0, night: 0 };
+} catch(e) {}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
+}
+
+var p2 = function(n){ return String(n).padStart(2,'0'); };
+var ds = function(d){ return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); };
+var ts = function(d){ return p2(d.getHours())+':'+p2(d.getMinutes()); };
+var mins = function(t){ if(!t) return 0; var a=t.split(':'); return +a[0]*60 + +a[1]; };
+var V = function(id){ var e=document.getElementById(id); return e?e.value:''; };
+var NAMES = { annual:'سنوية', casual:'عارضة', sick:'مرضية', replacement:'بدل' };
+var IN_MAX = '07:50', OUT_MIN = '15:50';
+
+var TABS = [
+  ['today', '🕗', 'الحضور'],
+  ['leave', '🏖️', 'الإجازات'],
+  ['work', '⏱️', 'الإضافي والسهر'],
+  ['shift', '🔄', 'الورديات ورمضان'],
+  ['rep', '📊', 'التقرير المالي'],
+  ['settings', '⚙️', 'الإعدادات']
+];
+
+var tab = 'today';
+
+function Q(k){ return S.quota && S.quota[k] !== undefined ? +S.quota[k] : {annual:30, casual:7, sick:10, replacement:0}[k]; }
+
+function qTotal(y, q){
+  return S.leaves.filter(function(l){
+    return l.type !== 'replacement' && +l.date.slice(0,4) === y && Math.floor((+l.date.slice(5,7)-1)/3) === q;
+  }).reduce(function(a,l){ return a + l.days; }, 0);
+}
+
+function mTotal(ym, t){
+  return S.leaves.filter(function(l){
+    return l.date.slice(0,7) === ym && (!t || l.type === t);
+  }).reduce(function(a,l){ return a + l.days; }, 0);
+}
+
+function used(y, t){
+  return S.leaves.filter(function(l){
+    return +l.date.slice(0,4) === y && l.type === t;
+  }).reduce(function(a,l){ return a + l.days; }, 0);
+}
+
+function totalReplacementEarned(){
+  return S.work.length;
+}
+
+function replacementBalance(){
+  var earned = totalReplacementEarned();
+  var taken = S.leaves.filter(function(l){ return l.type === 'replacement'; }).reduce(function(a,l){ return a + l.days; }, 0);
+  return earned - taken;
+}
+
+function qLabel(q){ return 'الربع '+(q+1)+' ('+['يناير–مارس','أبريل–يونيو','يوليو–سبتمبر','أكتوبر–ديسمبر'][q]+')'; }
+function hourlyRate(){ return (+S.salary || 0) / 240; }
+function dailyRate(){ return (+S.salary || 0) / 30; }
+
+function ovl(a, b, c, d){ return Math.max(0, Math.min(b, d) - Math.max(a, c)) / 60; }
+
+function otHours(o){
+  var h = (mins(o.to) - mins(o.from)) / 60;
+  return Math.max(0, Math.round(h * 100) / 100);
+}
+
+function otPay(o){
+  var f = mins(o.from), t = mins(o.to), hr = hourlyRate();
+  var dayHrs = ovl(f, t, 16*60, 18*60);
+  var nightHrs = ovl(f, t, 18*60, 24*60);
+  return hr * (dayHrs * 1.35 + nightHrs * 1.70);
+}
+
+function money(n){ return Math.round(n || 0).toLocaleString('ar-EG') + ' ج.م'; }
+
+function banner(){
+  var n = new Date(), y = n.getFullYear(), q = Math.floor(n.getMonth()/3), t = qTotal(y, q);
+  if (t > 9) {
+    return '<div class="warn">⚠️ <span><b>تنبيه هام (الربع سنوي):</b> إجمالي الإجازات (السنوية/العارضة/المرضية) في '+qLabel(q)+' هو <b>'+t+' أيام</b>، وهو يزيد عن 9 أيام. (ملاحظة: إجازات البدل لا تُحسب ضمن الـ 9 أيام).</span></div>';
+  }
+  return '';
+}
+
+function dayName(d){
+  return new Date(d+'T12:00:00').toLocaleDateString('ar-EG', { weekday:'long', day:'numeric', month:'long' });
+}
+
+function vToday(){
+  var n = new Date(), d = ds(n), r = S.att[d] || {};
+  var late = r.in && mins(r.in) > mins(IN_MAX);
+  var early = r.out && mins(r.out) < mins(OUT_MIN);
+  
+  var h = '<h1>تسجيل الحضور والانصراف</h1><div class="sub">'+n.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</div>'+banner();
+  
+  h += '<div class="card">';
+  h += '<h2>⏱️ المواعيد اليومية الرسمية</h2>';
+  h += '<div class="kv"><span>تسجيل الحضور</span><b class="big">'+(r.in || '--:--')+(r.in?' <span class="bd '+(late?'w':'o')+'">'+(late?'متأخر':'في الموعد')+'</span>':'')+'</b></div>';
+  h += '<div class="kv"><span>تسجيل الانصراف</span><b class="big">'+(r.out || '--:--')+(r.out?' <span class="bd '+(early?'w':'o')+'">'+(early?'قبل الموعد':'تمام')+'</span>':'')+'</b></div>';
+  h += '<div class="sub" style="margin-top:8px">مواعيد الدوام: الحضور حتى <b>7:50 ص</b>، والانصراف من <b>3:50 م</b></div>';
+  
+  h += '<div class="row" style="margin-top:10px">';
+  h += '<button data-a="in">🟢 تسجيل حضور الآن</button>';
+  h += '<button data-a="out" class="sec">🔴 تسجيل انصراف الآن</button>';
+  h += '</div></div>';
+
+  h += '<div class="card"><h2>✏️ إدخال / تعديل يدوي (في حال النسيان)</h2>';
+  h += '<label>التاريخ</label><input type="date" id="md" value="'+d+'">';
+  h += '<div class="row"><div><label>وقت الحضور</label><input type="time" id="mi" value="'+(r.in||'07:50')+'"></div><div><label>وقت الانصراف</label><input type="time" id="mo" value="'+(r.out||'15:50')+'"></div></div>';
+  h += '<button data-a="man" class="sec">حفظ التعديل اليدوي</button></div>';
+
+  var ks = Object.keys(S.att).sort().reverse().slice(0, 10);
+  h += '<div class="card"><h2>📅 سجل الحضور الحديث (مع خيار الحذف)</h2>'+(ks.length ? ks.map(function(k){
+    var a = S.att[k];
+    var isL = a.in && mins(a.in) > mins(IN_MAX);
+    return '<div class="li"><span><b>'+dayName(k)+'</b><br><small style="color:var(--mu)">حضور: '+(a.in||'--')+' | انصراف: '+(a.out||'--')+(isL ? ' <span class="bd w">تأخير</span>':'')+'</small></span><button class="x" data-a="delatt" data-k="'+k+'">🗑️ حذف</button></div>';
+  }).join('') : '<div class="empty">لا توجد تسجيلات أسبوعية بعد</div>') + '</div>';
+
+  return h;
+}
+
+function leaveDays(a, b, incl){
+  var out = [], c = new Date(a+'T12:00:00'), e = new Date(b+'T12:00:00');
+  while(c <= e && out.length < 365){
+    var g = c.getDay();
+    if(incl || (g !== 5 && g !== 6)) out.push(ds(c));
+    c.setDate(c.getDate()+1);
+  }
+  return out;
+}
+
+function vLeave(){
+  var n = new Date(), d = ds(n), y = n.getFullYear(), q = Math.floor(n.getMonth()/3), t = qTotal(y, q);
+  var repRem = replacementBalance();
+  var repEarned = totalReplacementEarned();
+  var repTaken = S.leaves.filter(function(l){ return l.type === 'replacement'; }).reduce(function(a,l){ return a + l.days; }, 0);
+
+  var h = '<h1>نظام ورصيد الإجازات</h1><div class="sub">متابعة الأرصدة السنوية وإجازات البدل والخصم الربع سنوي ('+y+')</div>'+banner();
+
+  h += '<div class="card"><h2>📊 أرصدة الإجازات المتبقية</h2>';
+  ['annual','casual','sick'].forEach(function(k){
+    var u = used(y, k), qt = Q(k), rem = qt - u;
+    h += '<div class="kv"><span>إجازة '+NAMES[k]+'</span><b style="'+(rem<0?'color:var(--wr)':'')+'">المتبقي '+rem+' من أصل '+qt+' يوم</b></div>';
+    h += '<div class="bar"><i style="width:'+(qt>0?Math.min(100, Math.max(0, u/qt*100)):0)+'%"></i></div>';
+  });
+
+  h += '<div class="kv" style="margin-top:10px;background:var(--bg);padding:10px;border-radius:10px"><span>🎁 رصيد إجازات البدل (تراكمي تلقائي)</span><b class="big" style="font-size:18px">'+repRem+' يوم متبقي <small style="font-size:12px;font-weight:normal">(مكتسب '+repEarned+' - مأخوذ '+repTaken+')</small></b></div>';
+
+  h += '<div class="kv" style="margin-top:10px"><span>مجموع الإجازات المستهلكة في '+qLabel(q)+' (تخضع لشرط الـ 9 أيام)</span><b style="'+(t>9?'color:var(--wr)':'')+'">'+t+' أيام '+(t>9?'(تنبيه!)':'')+'</b></div>';
+  h += '<div class="sub" style="margin-top:4px;font-size:11px">ملاحظة: إجازات البدل لا تُحسب إطلاقاً ضمن حد الـ 9 أيام الربع سنوي.</div>';
+  h += '<div class="kv"><span>إجمالي إجازات هذا الشهر</span><b>'+mTotal(d.slice(0,7))+' يوم</b></div>';
+  h += '</div>';
+
+  h += '<div class="card"><h2>📝 تسجيل طلب إجازة جديد</h2>';
+  h += '<label>نوع الإجازة</label><select id="lt">';
+  h += '<option value="annual">سنوية (30 يوم)</option>';
+  h += '<option value="casual">عارضة (7 أيام)</option>';
+  h += '<option value="sick">مرضية (10 أيام)</option>';
+  h += '<option value="replacement">إجازة بدل (تخصم من رصيد أيام البدل: '+repRem+' يوم متاح)</option>';
+  h += '</select>';
+
+  h += '<label>مدة الإجازة</label><select id="l_dur">';
+  h += '<option value="1">يوم كامل (أو عدة أيام)</option>';
+  h += '<option value="0.5">نصف يوم (0.5 يوم)</option>';
+  h += '</select>';
+
+  h += '<div class="row"><div><label>من تاريخ</label><input type="date" id="ld" value="'+d+'"></div>';
+  h += '<div id="le_wrap"><div><label>إلى تاريخ</label><input type="date" id="le" value="'+d+'"></div></div></div>';
+
+  h += '<label style="display:flex;gap:8px;align-items:center;margin-top:10px;cursor:pointer"><input type="checkbox" id="lw" style="width:auto"> احتساب الجمعة والسبت ضمن أيام الإجازة</label>';
+  h += '<button data-a="leave">حفظ وتسجيل الإجازة</button><div id="lm" style="color:var(--wr);font-size:13px;margin-top:6px"></div></div>';
+
+  var g = {};
+  S.leaves.forEach(function(l){
+    var k = l.gid || l.id;
+    (g[k] = g[k] || {k:k, type:l.type, ds:[], n:0}).ds.push(l.date);
+    g[k].n += l.days;
+  });
+  var ls = Object.keys(g).map(function(k){ return g[k]; }).sort(function(a,b){ return a.ds[0] < b.ds[0] ? 1 : -1; }).slice(0, 15);
+
+  h += '<div class="card"><h2>📜 سجل الإجازات المسجلة (مع خيار الحذف)</h2>'+(ls.length ? ls.map(function(o){
+    o.ds.sort();
+    var f = o.ds[0], e = o.ds[o.ds.length-1];
+    return '<div class="li"><span><b>'+(f===e ? dayName(f) : 'من '+dayName(f)+' إلى '+dayName(e))+'</b><br><small style="color:var(--mu)">نوع: '+NAMES[o.type]+' • المدة: '+o.n+' يوم</small></span><button class="x" data-a="dell" data-i="'+o.k+'">🗑️ حذف</button></div>';
+  }).join('') : '<div class="empty">لا يوجد إجازات مسجلة حالياً</div>') + '</div>';
+
+  return h;
+}
+
+function vWork(){
+  var n = new Date(), d = ds(n), ym = d.slice(0,7), dl = dailyRate();
+  var os = S.ot.filter(function(x){ return x.date.slice(0,7) === ym; });
+  var ws = S.work.filter(function(w){ return w.date.slice(0,7) === ym && w.kind === 'weekend'; });
+  var hs = S.work.filter(function(w){ return w.date.slice(0,7) === ym && w.kind === 'holiday'; });
+  
+  var oh = os.reduce(function(a,o){ return a + otHours(o); }, 0);
+  var op = os.reduce(function(a,o){ return a + otPay(o); }, 0);
+  var wp = ws.reduce(function(a,w){ return a + dl + (w.extraOtPay || 0); }, 0);
+  var hp = hs.reduce(function(a,w){ return a + (dl * 2) + (w.extraOtPay || 0); }, 0);
+
+  var h = '<h1>ساعات السهر والأعياد والراحات</h1><div class="sub">احتساب تلقائي وحساب البدلات لشهر '+ym+' (وفق قانون العمل)</div>';
+  
+  if (!S.salary) {
+    h += '<div class="warn">⚠️ <span>لم تقم بإدخال راتبك الشهري بعد. يرجى إدخاله لتقوم المنظومة بحساب المستحقات والبدلات المالية بدقة.</span></div>';
+  }
+
+  h += '<div class="card"><h2>🌙 أولاً: تسجيل ساعات السهر والعمل الإضافي (4:00 م - 7:00 م+)</h2>';
+  h += '<label>تاريخ يوم السهر</label><input type="date" id="od" value="'+d+'">';
+  h += '<div class="row"><div><label>من الساعة</label><input type="time" id="of" value="16:00"></div><div><label>إلى الساعة</label><input type="time" id="ot" value="19:00"></div></div>';
+  h += '<button data-a="ot">حفظ ساعات السهر</button>';
+  h += '<div class="kv" style="margin-top:12px"><span>إجمالي إضافي الشهر</span><b>'+os.length+' أيام ('+oh+' ساعة) = '+money(op)+'</b></div>';
+  
+  if(os.length){
+    h += '<div style="margin-top:10px">';
+    os.forEach(function(o){
+      h += '<div class="li"><span><b>'+dayName(o.date)+'</b><br><small style="color:var(--mu)">من '+o.from+' إلى '+o.to+' ('+otHours(o)+' ساعة)</small></span><button class="x" data-a="delo" data-i="'+o.id+'">🗑️ حذف</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="card"><h2>📅 ثانياً: تسجيل العمل أيام الراحات (الجمعة والسبت)</h2>';
+  h += '<div class="sub">تُحسب تلقائياً: <b>أجر يوم كامل + تضاف تلقائياً إلى رصيد إجازات البدل</b>.</div>';
+  h += '<label>التاريخ</label><input type="date" id="wd2" value="'+d+'">';
+  h += '<label style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="w_extra2" style="width:auto"> تمديد سهر في هذا اليوم (بعد 7:00 م)</label>';
+  h += '<button data-a="wkw">تسجيل عمل جمعة / سبت</button>';
+  h += '<div class="kv" style="margin-top:12px"><span>إجمالي الجمعة والسبت هذا الشهر</span><b>'+ws.length+' أيام = '+money(wp)+' + '+ws.length+' يوم بدل متراكم</b></div>';
+  
+  if(ws.length){
+    h += '<div style="margin-top:10px">';
+    ws.forEach(function(w){
+      h += '<div class="li"><span><b>'+dayName(w.date)+'</b><br><small style="color:var(--mu)">عمل جمعة/سبت (+1 يوم بدل تلقائي)</small></span><button class="x" data-a="delw" data-i="'+w.id+'">🗑️ حذف</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="card"><h2>🎉 ثالثاً: العمل في الأعياد والعطلات الرسمية</h2>';
+  h += '<div class="sub">تُحسب تلقائياً: <b>أجر يومين (مثلي الأجر 200%) + تضاف تلقائياً إلى رصيد إجازات البدل</b>.</div>';
+  h += '<label>التاريخ</label><input type="date" id="wd3" value="'+d+'">';
+  h += '<button data-a="wkh">تسجيل عمل يوم عيد / عطلة رسمية</button>';
+  h += '<div class="kv" style="margin-top:12px"><span>إجمالي الأعياد هذا الشهر</span><b>'+hs.length+' أيام = '+money(hp)+' + '+hs.length+' يوم بدل متراكم</b></div>';
+  
+  if(hs.length){
+    h += '<div style="margin-top:10px">';
+    hs.forEach(function(w){
+      h += '<div class="li"><span><b>'+dayName(w.date)+'</b><br><small style="color:var(--mu)">عمل عيد/عطلة (+1 يوم بدل تلقائي)</small></span><button class="x" data-a="delw" data-i="'+w.id+'">🗑️ حذف</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  return h;
+}
+
+function vShift(){
+  var n = new Date(), d = ds(n), ym = d.slice(0,7);
+  var midShifts = S.shifts.filter(function(s){ return s.date.slice(0,7) === ym && s.type === 'mid'; });
+  var nightShifts = S.shifts.filter(function(s){ return s.date.slice(0,7) === ym && s.type === 'night'; });
+  var ramadanDays = S.ramadan.filter(function(r){ return r.date.slice(0,7) === ym; });
+
+  var midPayTotal = midShifts.reduce(function(a,s){ return a + (s.rate || S.shiftRates.mid || 0); }, 0);
+  var nightPayTotal = nightShifts.reduce(function(a,s){ return a + (s.rate || S.shiftRates.night || 0); }, 0);
+  var ramadanOtTotal = ramadanDays.reduce(function(a,r){ return a + (r.otRate || S.ramadanOtRate || 0); }, 0);
+
+  var h = '<h1>نظام الورديات وعمل شهر رمضان</h1><div class="sub">تسجيل حضور وانصراف الورديات والاحتساب التلقائي واليدوي للأجر</div>';
+
+  h += '<div class="card"><h2>⚙️ أجر الورديات والسهر الافتراضي (يمكنك تعديلها لكل يوم)</h2>';
+  h += '<div class="row">';
+  h += '<div><label>أجر وردية الوسط (جنيه)</label><input type="number" id="sr_mid" value="'+(S.shiftRates.mid||'')+'" placeholder="مثال: 150"></div>';
+  h += '<div><label>أجر الوردية الليلية (جنيه)</label><input type="number" id="sr_night" value="'+(S.shiftRates.night||'')+'" placeholder="مثال: 200"></div>';
+  h += '</div>';
+  h += '<button data-a="save_shift_rates" class="sec">حفظ الأجور الافتراضية</button></div>';
+
+  h += '<div class="card"><h2>🌆 1. الوردية الوسطى (3:30 م - 11:30 م)</h2>';
+  h += '<label>التاريخ</label><input type="date" id="sd_mid" value="'+d+'">';
+  h += '<div class="row"><div><label>الحضور</label><input type="time" id="si_mid" value="15:30"></div><div><label>الانصراف</label><input type="time" id="so_mid" value="23:30"></div></div>';
+  h += '<label>أجر هذه الوردية اليومي (يدوياً أو بالافتراضي)</label><input type="number" id="sp_mid" value="'+(S.shiftRates.mid||'')+'" placeholder="أدخل الأجر اليومي">';
+  h += '<button data-a="add_shift_mid">تسجيل وردية وسط</button>';
+  h += '<div class="kv" style="margin-top:10px"><span>إجمالي وردية الوسط هذا الشهر</span><b>'+midShifts.length+' أيام = '+money(midPayTotal)+'</b></div>';
+  
+  if(midShifts.length){
+    h += '<div style="margin-top:8px">';
+    midShifts.forEach(function(s){
+      h += '<div class="li"><span><b>'+dayName(s.date)+'</b><br><small style="color:var(--mu)">حضور: '+s.in+' | انصراف: '+s.out+' • الأجر: '+money(s.rate)+'</small></span><button class="x" data-a="del_shift" data-i="'+s.id+'">🗑️ حذف</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="card"><h2>🌃 2. الوردية الليلية (11:30 م - 7:30 ص)</h2>';
+  h += '<label>التاريخ</label><input type="date" id="sd_night" value="'+d+'">';
+  h += '<div class="row"><div><label>الحضور</label><input type="time" id="si_night" value="23:30"></div><div><label>الانصراف</label><input type="time" id="so_night" value="07:30"></div></div>';
+  h += '<label>أجر هذه الوردية اليومي (يدوياً أو بالافتراضي)</label><input type="number" id="sp_night" value="'+(S.shiftRates.night||'')+'" placeholder="أدخل الأجر اليومي">';
+  h += '<button data-a="add_shift_night">تسجيل وردية ليلية</button>';
+  h += '<div class="kv" style="margin-top:10px"><span>إجمالي الوردية الليلية هذا الشهر</span><b>'+nightShifts.length+' أيام = '+money(nightPayTotal)+'</b></div>';
+  
+  if(nightShifts.length){
+    h += '<div style="margin-top:8px">';
+    nightShifts.forEach(function(s){
+      h += '<div class="li"><span><b>'+dayName(s.date)+'</b><br><small style="color:var(--mu)">حضور: '+s.in+' | انصراف: '+s.out+' • الأجر: '+money(s.rate)+'</small></span><button class="x" data-a="del_shift" data-i="'+s.id+'">🗑️ حذف</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="card"><h2>🌙 3. العمل في شهر رمضان (7:30 ص - 2:00 م) والسهر (2:00 م - 7:00 م)</h2>';
+  h += '<label>التاريخ</label><input type="date" id="rd" value="'+d+'">';
+  h += '<div class="row"><div><label>الحضور</label><input type="time" id="ri" value="07:30"></div><div><label>الانصراف</label><input type="time" id="ro" value="14:00"></div></div>';
+  h += '<div class="row"><div><label>بداية السهر</label><input type="time" id="rso" value="14:00"></div><div><label>نهاية السهر</label><input type="time" id="rse" value="19:00"></div></div>';
+  h += '<label>قيمة سهر رمضان لهذا اليوم (يدوياً أو بالافتراضي)</label><input type="number" id="rp" value="'+(S.ramadanOtRate||'')+'" placeholder="أدخل قيمة السهر بالجنيه">';
+  h += '<button data-a="add_ramadan">تسجيل عمل وسهر رمضان</button>';
+  h += '<div class="kv" style="margin-top:10px"><span>إجمالي سهر رمضان هذا الشهر</span><b>'+ramadanDays.length+' أيام = '+money(ramadanOtTotal)+'</b></div>';
+  
+  if(ramadanDays.length){
+    h += '<div style="margin-top:8px">';
+    ramadanDays.forEach(function(r){
+      h += '<div class="li"><span><b>'+dayName(r.date)+'</b><br><small style="color:var(--mu)">دوام: '+r.in+'←'+r.out+' | سهر: '+r.sFrom+'←'+r.sTo+' • قيمته: '+money(r.otRate)+'</small></span><button class="x" data-a="del_ramadan" data-i="'+r.id+'">🗑️ حذف</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  return h;
+}
+
+function vRep(){
+  var ym = S._ym || ds(new Date()).slice(0,7);
+  var y = +ym.slice(0,4), q = Math.floor((+ym.slice(5,7)-1)/3);
+  
+  var attDays = Object.keys(S.att).filter(function(k){ return k.slice(0,7) === ym; });
+  var lates = attDays.filter(function(k){ return S.att[k].in && mins(S.att[k].in) > mins(IN_MAX); }).length;
+  var earlies = attDays.filter(function(k){ return S.att[k].out && mins(S.att[k].out) < mins(OUT_MIN); }).length;
+
+  var os = S.ot.filter(function(o){ return o.date.slice(0,7) === ym; });
+  var otHrs = os.reduce(function(a,o){ return a + otHours(o); }, 0);
+  var otMoney = os.reduce(function(a,o){ return a + otPay(o); }, 0);
+
+  var holDays = S.work.filter(function(w){ return w.date.slice(0,7) === ym && w.kind === 'holiday'; }).length;
+  var wkDays = S.work.filter(function(w){ return w.date.slice(0,7) === ym && w.kind === 'weekend'; }).length;
+
+  var holPay = holDays * 2 * dailyRate();
+  var wkPay = wkDays * 1 * dailyRate();
+
+  var midShifts = S.shifts.filter(function(s){ return s.date.slice(0,7) === ym && s.type === 'mid'; });
+  var nightShifts = S.shifts.filter(function(s){ return s.date.slice(0,7) === ym && s.type === 'night'; });
+  var ramadanDays = S.ramadan.filter(function(r){ return r.date.slice(0,7) === ym; });
+
+  var midPayTotal = midShifts.reduce(function(a,s){ return a + (s.rate || 0); }, 0);
+  var nightPayTotal = nightShifts.reduce(function(a,s){ return a + (s.rate || 0); }, 0);
+  var ramadanOtTotal = ramadanDays.reduce(function(a,r){ return a + (r.otRate || 0); }, 0);
+
+  var grandTotalPay = otMoney + holPay + wkPay + midPayTotal + nightPayTotal + ramadanOtTotal;
+  var qT = qTotal(y, q);
+
+  var h = '<h1>التقرير المالي والتراكمي</h1><div class="sub">كشف حساب مستحقات شهر '+ym+' والربع سنوي</div>'+banner();
+
+  h += '<div class="card"><h2>💵 أدخل مرتبك الشهري الأساسي</h2>';
+  h += '<div class="row"><div><input type="number" id="sal" value="'+(S.salary||'')+'" placeholder="مثال: 10000"></div><div><button data-a="sal" style="margin-top:0">حفظ المرتب</button></div></div>';
+  h += '<div class="kv"><span>قيمة اليومية (المرتب ÷ 30)</span><b>'+money(dailyRate())+'</b></div>';
+  h += '<div class="kv"><span>قيمة الساعة (المرتب ÷ 240)</span><b>'+money(hourlyRate())+'</b></div></div>';
+
+  h += '<div class="card"><label><b>اختر الشهر المعروض:</b></label><input type="month" id="rm" value="'+ym+'">';
+  
+  h += '<h2 style="margin-top:16px">📌 ملخص الحضور والانصراف</h2>';
+  h += '<div class="kv"><span>أيام الحضور الفعلية</span><b>'+attDays.length+' يوم</b></div>';
+  h += '<div class="kv"><span>عدد مرات التأخير (بعد 7:50 ص)</span><b style="'+(lates>0?'color:var(--wr)':'')+'">'+lates+' مرة</b></div>';
+  h += '<div class="kv"><span>الانصراف المبكر (قبل 3:50 م)</span><b>'+earlies+' مرة</b></div>';
+
+  h += '<h2 style="margin-top:16px">🏖️ إحصائيات الإجازات</h2>';
+  ['annual','casual','sick'].forEach(function(k){
+    h += '<div class="kv"><span>إجازات '+NAMES[k]+'</span><b>'+mTotal(ym, k)+' يوم</b></div>';
+  });
+  h += '<div class="kv"><span>إجازات البدل المستهلكة هذا الشهر</span><b>'+mTotal(ym, 'replacement')+' يوم</b></div>';
+  h += '<div class="kv"><span>إجمالي إجازات الشهر</span><b>'+mTotal(ym)+' يوم</b></div>';
+  h += '<div class="kv"><span>إجمالي الإجازات التي تخضع لشرط '+qLabel(q)+'</span><b style="'+(qT>9?'color:var(--wr)':'')+'">'+qT+' يوم '+(qT>9?'⚠️':'')+'</b></div>';
+
+  h += '<h2 style="margin-top:16px">💰 إجمالي المستحقات المالية الإضافية والورديات</h2>';
+  h += '<div class="kv"><span>مبلغ ساعات السهر والإضافي</span><b>'+money(otMoney)+' ('+otHrs+' ساعة)</b></div>';
+  h += '<div class="kv"><span>بدل العمل في الأعياد الرسمية</span><b>'+money(holPay)+' ('+holDays+' أيام)</b></div>';
+  h += '<div class="kv"><span>بدل العمل الجمعة والسبت</span><b>'+money(wkPay)+' ('+wkDays+' أيام)</b></div>';
+  h += '<div class="kv"><span>أجر وردية الوسط (3:30م-11:30م)</span><b>'+money(midPayTotal)+' ('+midShifts.length+' يوم)</b></div>';
+  h += '<div class="kv"><span>أجر الوردية الليلية (11:30م-7:30ص)</span><b>'+money(nightPayTotal)+' ('+nightShifts.length+' يوم)</b></div>';
+  h += '<div class="kv"><span>سهر وتمديد رمضان</span><b>'+money(ramadanOtTotal)+' ('+ramadanDays.length+' يوم)</b></div>';
+  h += '<div class="kv"><span>أُذونات بدل الراحة المكتسبة هذا الشهر</span><b>'+(holDays + wkDays)+' أيام بدل راحة</b></div>';
+  h += '<div class="kv" style="margin-top:8px"><span>إجمالي المستحقات المالية الصافية</span><b class="big">'+money(grandTotalPay)+'</b></div>';
+  h += '</div>';
+
+  return h;
+}
+
+function vSettings(){
+  var h = '<h1>الإعدادات والمزامنة</h1><div class="sub">الحفاظ على بياناتك وإعداد التنبيهات والأرصدة</div>';
+
+  h += '<div class="card"><h2>📧 المزامنة عبر إيميل المستخدم</h2>';
+  h += '<div class="sub">قم بتركيب إيميلك الشخصي لضمان ربط البيانات واستعادتها بسهولة عند تغيير الهاتف.</div>';
+  h += '<label>البريد الإلكتروني الخاص بك</label><input type="email" id="uemail" value="'+(S.email||'')+'" placeholder="user@gmail.com">';
+  h += '<button data-a="save_email">حفظ بريد المزامنة</button></div>';
+
+  h += '<div class="card"><h2>⚙️ تعديل أرصدة الإجازات السنوية المستحقة</h2>';
+  h += '<div class="row"><div><label>السنوية</label><input type="number" id="qa" value="'+Q('annual')+'"></div><div><label>العارضة</label><input type="number" id="qc" value="'+Q('casual')+'"></div><div><label>المرضية</label><input type="number" id="qs" value="'+Q('sick')+'"></div></div>';
+  h += '<button data-a="quota" class="sec">حفظ الأرصدة الجديدة</button></div>';
+
+  h += '<div class="card"><h2>🔔 التذكيرات والتنبيهات المباشرة</h2>';
+  h += '<button data-a="req_notify">تفعيل الإشعارات اليومية</button>';
+  h += '<button data-a="download_ics" class="sec" style="margin-top:8px">📅 إضافة المواعيد لتقويم Google / Apple Calendar</button></div>';
+
+  h += '<div class="card"><h2>💾 النسخ الاحتياطي وتصدير البيانات</h2>';
+  h += '<div class="row">';
+  h += '<button data-a="exp_json">تصدير النسخة (JSON)</button>';
+  h += '<button data-a="exp_csv" class="sec">تصدير كملف Excel / CSV</button>';
+  h += '</div>';
+  h += '<label style="margin-top:12px">استرجاع نسخة احتياطية (إلصاق نص البيانات)</label>';
+  h += '<textarea id="bkt" rows="3" placeholder="الصق كود النسخة الاحتياطية هنا..."></textarea>';
+  h += '<button data-a="rs" class="sec">استرجاع البيانات الآن</button>';
+  h += '<div id="bkm" style="margin-top:6px;font-size:13px;color:var(--pr)"></div></div>';
+
+  return h;
+}
+
+var ICON_SVG = '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect width="512" height="512" rx="120" fill="url(#mg)"/><circle cx="256" cy="262" r="140" fill="none" stroke="#fff" stroke-width="30"/><path d="M256 176v90l62 40" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><circle cx="380" cy="132" r="42" fill="#fbbf24" stroke="#0f766e" stroke-width="14"/></svg>';
+
+function render(){
+  var theme = S.theme === 'dark' ? 'dark' : (S.theme === 'light' ? 'light' : '');
+  if(theme) document.documentElement.setAttribute('data-theme', theme);
+  else document.documentElement.removeAttribute('data-theme');
+
+  var viewFn = { today: vToday, leave: vLeave, work: vWork, shift: vShift, rep: vRep, settings: vSettings }[tab];
+  
+  var brandHeader = '<div class="brand-header"><div class="brand">'+ICON_SVG+'<b>مُنذِر (Monzer)</b></div><button class="theme-toggle" id="t-toggle" title="تبديل الوضع">🌙</button></div>';
+  
+  document.getElementById('app').innerHTML = brandHeader + viewFn();
+  document.getElementById('nav').innerHTML = TABS.map(function(t){
+    return '<a data-t="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'"><span>'+t[1]+'</span>'+t[2]+'</a>';
+  }).join('');
+}
+
+// Clean event delegation listener (No inline event attributes anywhere!)
+document.addEventListener('change', function(e){
+  if(e.target.id === 'rm' && e.target.value){
+    S._ym = e.target.value;
+    render();
+  }
+  if(e.target.id === 'l_dur'){
+    var wrap = document.getElementById('le_wrap');
+    if(wrap) {
+      if(e.target.value === '0.5') wrap.style.display = 'none';
+      else wrap.style.display = 'block';
+    }
+  }
+});
+
+document.addEventListener('click', function(e){
+  var toggle = e.target.closest('#t-toggle');
+  if(toggle) {
+    S.theme = (S.theme === 'dark') ? 'light' : 'dark';
+    save(); render(); return;
+  }
+
+  var t = e.target.closest('[data-t]');
+  if(t){ tab = t.dataset.t; render(); window.scrollTo(0,0); return; }
+
+  var b = e.target.closest('[data-a]');
+  if(!b) return;
+
+  var a = b.dataset.a, n = new Date(), d = ds(n), id = Date.now();
+
+  if(a === 'in'){ S.att[d] = S.att[d] || {}; S.att[d].in = ts(n); }
+  else if(a === 'out'){ S.att[d] = S.att[d] || {}; S.att[d].out = ts(n); }
+  else if(a === 'man'){
+    var md = V('md'); if(md) S.att[md] = { in: V('mi')||undefined, out: V('mo')||undefined };
+  }
+  else if(a === 'delatt'){ delete S.att[b.dataset.k]; }
+  else if(a === 'leave'){
+    var ld = V('ld'), lm = document.getElementById('lm');
+    var lType = V('lt');
+    var dur = parseFloat(V('l_dur')) || 1;
+    
+    if(dur === 0.5){
+      if(!ld){ if(lm) lm.textContent = 'يرجى اختيار التاريخ'; return; }
+      if(lType === 'replacement' && replacementBalance() < 0.5){
+        if(lm) lm.textContent = 'رصيد إجازات البدل لديك لا يكفي (المتاح: ' + replacementBalance() + ' يوم)'; return;
+      }
+      S.leaves.push({ id: id, gid: id, date: ld, type: lType, days: 0.5 });
+    } else {
+      var le = V('le') || ld;
+      if(!ld || le < ld){ if(lm) lm.textContent = 'تأكد أن تاريخ النهاية يطابق أو يلي تاريخ البداية'; return; }
+      var dd = leaveDays(ld, le, document.getElementById('lw').checked);
+      if(!dd.length){ if(lm) lm.textContent = 'الفترة تقع بالكامل في العطلة الأسبوعية (جمعة وسبت)'; return; }
+      if(lType === 'replacement' && replacementBalance() < dd.length){
+        if(lm) lm.textContent = 'رصيد إجازات البدل لا يكفي (المتاح: ' + replacementBalance() + ' يوم، والمطلوب: ' + dd.length + ' يوم)'; return;
+      }
+      dd.forEach(function(x, i){
+        S.leaves.push({ id: id+i, gid: id, date: x, type: lType, days: 1 });
+      });
+    }
+  }
+  else if(a === 'quota'){
+    S.quota = {
+      annual: Math.max(0, parseFloat(V('qa')) || 0),
+      casual: Math.max(0, parseFloat(V('qc')) || 0),
+      sick: Math.max(0, parseFloat(V('qs')) || 0)
+    };
+    alert('تم حفظ أرصدة الإجازات بنجاح ✅');
+  }
+  else if(a === 'dell'){
+    S.leaves = S.leaves.filter(function(x){ return (x.gid||x.id) != b.dataset.i; });
+  }
+  else if(a === 'ot'){
+    var od = V('od');
+    if(od && V('of') && V('ot')) S.ot.push({ id: id, date: od, from: V('of'), to: V('ot') });
+  }
+  else if(a === 'delo'){ S.ot = S.ot.filter(function(x){ return x.id != b.dataset.i; }); }
+  else if(a === 'wkw' || a === 'wkh'){
+    var wd2 = V(a === 'wkw' ? 'wd2' : 'wd3');
+    var isExtra = (a === 'wkw' && document.getElementById('w_extra2') && document.getElementById('w_extra2').checked);
+    if(wd2) S.work.push({
+      id: id,
+      date: wd2,
+      kind: a === 'wkw' ? 'weekend' : 'holiday',
+      extraOtPay: isExtra ? (hourlyRate() * 2) : 0
+    });
+  }
+  else if(a === 'delw'){ S.work = S.work.filter(function(x){ return x.id != b.dataset.i; }); }
+  else if(a === 'save_shift_rates'){
+    S.shiftRates = {
+      mid: parseFloat(V('sr_mid')) || 0,
+      night: parseFloat(V('sr_night')) || 0
+    };
+    alert('تم حفظ الأجور الافتراضية للورديات بنجاح ✅');
+  }
+  else if(a === 'add_shift_mid'){
+    var sd = V('sd_mid');
+    if(sd) S.shifts.push({
+      id: id,
+      date: sd,
+      type: 'mid',
+      in: V('si_mid') || '15:30',
+      out: V('so_mid') || '23:30',
+      rate: parseFloat(V('sp_mid')) || S.shiftRates.mid || 0
+    });
+  }
+  else if(a === 'add_shift_night'){
+    var sd = V('sd_night');
+    if(sd) S.shifts.push({
+      id: id,
+      date: sd,
+      type: 'night',
+      in: V('si_night') || '23:30',
+      out: V('so_night') || '07:30',
+      rate: parseFloat(V('sp_night')) || S.shiftRates.night || 0
+    });
+  }
+  else if(a === 'del_shift'){
+    S.shifts = S.shifts.filter(function(s){ return s.id != b.dataset.i; });
+  }
+  else if(a === 'add_ramadan'){
+    var rd = V('rd');
+    if(rd) S.ramadan.push({
+      id: id,
+      date: rd,
+      in: V('ri') || '07:30',
+      out: V('ro') || '14:00',
+      sFrom: V('rso') || '14:00',
+      sTo: V('rse') || '19:00',
+      otRate: parseFloat(V('rp')) || S.ramadanOtRate || 0
+    });
+  }
+  else if(a === 'del_ramadan'){
+    S.ramadan = S.ramadan.filter(function(r){ return r.id != b.dataset.i; });
+  }
+  else if(a === 'sal'){
+    S.salary = parseFloat(V('sal')) || 0;
+    alert('تم حفظ قيمة المرتب الأساسي ✅');
+  }
+  else if(a === 'save_email'){
+    S.email = V('uemail');
+    alert('تم حفظ البريد الإلكتروني الخاص بك للمزامنة ✅: ' + S.email);
+  }
+  else if(a === 'req_notify'){
+    if ('Notification' in window) {
+      Notification.requestPermission().then(function(p){
+        if(p === 'granted') alert('تم تفعيل إشعارات التنبيه بمواعيد الحضور والانصراف بنجاح 🔔');
+        else alert('لم يتم منح الإذن للإشعارات');
+      });
+    } else alert('المتصفح لا يدعم التنبيهات المباشرة');
+  }
+  else if(a === 'download_ics'){
+    var icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Monzer App//NONSGML//EN\n" +
+      "BEGIN:VEVENT\nSUMMARY:تذكير حضور العمل (مُنذِر)\nRRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH\nDTSTART:20260101T075000\nDURATION:PT10M\nEND:VEVENT\n" +
+      "BEGIN:VEVENT\nSUMMARY:تذكير انصراف العمل (مُنذِر)\nRRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH\nDTSTART:20260101T155000\nDURATION:PT10M\nEND:VEVENT\n" +
+      "END:VCALENDAR";
+    var blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute('download', 'monzer_work_reminders.ics');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  else if(a === 'exp_json'){
+    var blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+    var aLink = document.createElement('a');
+    aLink.href = URL.createObjectURL(blob);
+    aLink.download = 'monzer_backup_' + ds(new Date()) + '.json';
+    aLink.click();
+  }
+  else if(a === 'exp_csv'){
+    var csv = "\uFEFFالتاريخ,النوع,التفاصيل/الساعات\n";
+    Object.keys(S.att).forEach(function(k){ csv += k + ",حضور وانصراف,حضور: " + (S.att[k].in||'') + " | انصراف: " + (S.att[k].out||'') + "\n"; });
+    S.leaves.forEach(function(l){ csv += l.date + ",إجازة " + NAMES[l.type] + "," + l.days + " يوم\n"; });
+    S.ot.forEach(function(o){ csv += o.date + ",إضافي وسهر," + o.from + " إلى " + o.to + "\n"; });
+    S.shifts.forEach(function(s){ csv += s.date + ",وردية " + (s.type==='mid'?'وسط':'ليلية') + ",أجر: " + s.rate + "\n"; });
+    S.ramadan.forEach(function(r){ csv += r.date + ",دوام رمضان,سهر: " + r.otRate + "\n"; });
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var aLink = document.createElement('a');
+    aLink.href = URL.createObjectURL(blob);
+    aLink.download = 'monzer_report_' + ds(new Date()) + '.csv';
+    aLink.click();
+  }
+  else if(a === 'rs'){
+    try {
+      var ob = JSON.parse(V('bkt'));
+      if(!ob || typeof ob !== 'object' || !ob.att) throw 0;
+      S = Object.assign({ salary:0, att:{}, leaves:[], ot:[], work:[], shifts:[], ramadan:[] }, ob);
+      alert('تم استرجاع البيانات بنجاح ✅');
+    } catch(x) {
+      document.getElementById('bkm').textContent = 'النص المدخل غير صحيح، تأكد من نسخه بالكامل';
+      return;
+    }
+  }
+
+  save();
+  render();
+});
+
+render();
+</script>
 </body>
 </html>
