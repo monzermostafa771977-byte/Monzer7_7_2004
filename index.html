@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Monzer App - مُنذِر (v16 Ultimate - OTP Email Verification)</title>
+<title>Monzer App - مُنذِر (v15 Ultimate - Labor Law & Ramadan Corrected)</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232dd4bf'/%3E%3Cstop offset='1' stop-color='%230f766e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23g)'/%3E%3Ccircle cx='256' cy='262' r='140' fill='none' stroke='white' stroke-width='30'/%3E%3Cpath d='M256 176v90l62 40' fill='none' stroke='white' stroke-width='30' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='380' cy='132' r='42' fill='%23fbbf24' stroke='%230f766e' stroke-width='14'/%3E%3C/svg%3E">
 <style>
@@ -67,7 +67,6 @@ nav a.on{color:var(--pr);font-weight:800}
 .empty{color:var(--mu);font-size:14px;padding:12px 0;text-align:center}
 .law-card{background:var(--infob);border:1px solid var(--info);border-radius:12px;padding:14px;margin-bottom:12px;color:var(--tx);font-size:14px;line-height:1.5}
 .law-card h3{margin:0 0 8px;color:var(--info);font-size:16px}
-.otp-box{text-align:center;font-size:24px;letter-spacing:8px;font-weight:bold;}
 </style>
 </head>
 <body>
@@ -75,10 +74,9 @@ nav a.on{color:var(--pr);font-weight:800}
 <nav id="nav"></nav>
 
 <script>
-var KEY = 'monzer_app_v16';
+var KEY = 'monzer_app_v15';
 var S = {
   email: '',
-  emailVerified: false,
   salary: 0,
   basicSalary: 0,
   profitMonths: 0,
@@ -98,8 +96,6 @@ var S = {
   manualRepEarned: 0,
   manualRepDeducted: 0
 };
-
-var tempOtp = '';
 
 try {
   var saved = localStorage.getItem(KEY);
@@ -408,7 +404,7 @@ function vShift(){
   
   var ramadanOtTotal = ramadanOts.reduce(function(a,r){ return a + (r.otRate || S.ramadanOtRate || 0); }, 0);
 
-  var h = '<h1>نظام الورديات وعمل شهر رمضان</h1><div class="sub">Monzer App - دوام رمضان يوم عمل عادي، والمقابل المادي للسهر فقط</div>';
+  var h = '<h1>نظام الورديات وعمل شهر رمضان (بدون أجر إضافي للدوام، وسهر مستقل)</h1><div class="sub">Monzer App - دوام رمضان يوم عمل عادي، والمقابل المادي للسهر فقط</div>';
 
   h += '<div class="card"><h2>⚙️ أجور الورديات وسهر رمضان الافتراضية</h2>';
   h += '<div class="row">';
@@ -452,8 +448,8 @@ function vShift(){
   }
   h += '</div>';
 
-  h += '<div class="card" style="border:2px solid var(--pr)"><h2>🌙 3. دوام شهر رمضان الرسمي (7:30 ص - 2:00 م) [يوم عمل عادي]</h2>';
-  h += '<div class="sub">تسجيل أيام دوام رمضان كأيام عمل رسمية عادية مغطاة بالمرتب الأساسي والشامل.</div>';
+  h += '<div class="card" style="border:2px solid var(--pr)"><h2>🌙 3. دوام شهر رمضان الرسمي (7:30 ص - 2:00 م) [يوم عمل عادي بدون مقابل إضافي]</h2>';
+  h += '<div class="sub">تسجيل أيام دوام رمضان (الانصراف 2:00 ظهراً) كأيام عمل رسمية عادية مغطاة بالمرتب الأساسي والشامل.</div>';
   h += '<label>التاريخ</label><input type="date" id="rad_d" value="'+d+'">';
   h += '<div class="row"><div><label>وقت الحضور</label><input type="time" id="rad_i" value="07:30"></div><div><label>وقت الانصراف</label><input type="time" id="rad_o" value="14:00"></div></div>';
   h += '<button data-a="add_ramadan_att">تسجيل دوام رمضان (يوم عادي)</button>';
@@ -468,8 +464,8 @@ function vShift(){
   }
   h += '</div>';
 
-  h += '<div class="card" style="border:2px dashed var(--pr)"><h2>✨ 4. سهر رمضان الإضافي (2:00 م - 7:00 م) [بمقابل مادي]</h2>';
-  h += '<div class="sub">سجل أيام السهر الإضافية بعد الساعة 2 ظهراً وحتى 7 مساءً في شهر رمضان.</div>';
+  h += '<div class="card" style="border:2px dashed var(--pr)"><h2>✨ 4. سهر رمضان الإضافي (2:00 م - 7:00 م) [له مقابل مادي]</h2>';
+  h += '<div class="sub">سجل هنا أيام السهر الإضافية بعد الساعة 2 ظهراً وحتى 7 مساءً في شهر رمضان (لها أجر مستقل).</div>';
   h += '<label>التاريخ</label><input type="date" id="rot_d" value="'+d+'">';
   h += '<div class="row"><div><label>بداية السهر</label><input type="time" id="rot_f" value="14:00"></div><div><label>نهاية السهر</label><input type="time" id="rot_t" value="19:00"></div></div>';
   h += '<label>قيمة السهر لهذا اليوم (جنيه)</label><input type="number" id="rot_p" value="'+(S.ramadanOtRate||'')+'" placeholder="أدخل مبلغ السهر">';
@@ -676,24 +672,11 @@ function vRep(){
 }
 
 function vSettings(){
-  var h = '<h1>Monzer App - الإعدادات والمزامنة</h1><div class="sub">الحفاظ على بياناتك وتأكيد الربط بالبريد الإلكتروني</div>';
+  var h = '<h1>Monzer App - الإعدادات والمزامنة</h1><div class="sub">الحفاظ على بياناتك وإعداد التنبيهات والأرصدة</div>';
 
-  h += '<div class="card" style="border: 2px solid var(--pr);"><h2>🔒 الربط بالبريد الإلكتروني (نظام كود OTP الرقمي)</h2>';
+  h += '<div class="card"><h2>📧 المزامنة عبر إيميل المستخدم</h2>';
   h += '<label>البريد الإلكتروني الخاص بك</label><input type="email" id="uemail" value="'+(S.email||'')+'" placeholder="user@gmail.com">';
-  
-  if(S.emailVerified && S.email){
-    h += '<div style="margin-top:10px; background:var(--okb); padding:10px; border-radius:10px; color:var(--ok); font-weight:bold; text-align:center;">✅ البريد الإلكتروني مؤكد ومربوط بنجاح (' + S.email + ')</div>';
-    h += '<button data-a="reset_email" class="sec" style="margin-top:10px">تغيير البريد الإلكتروني</button>';
-  } else {
-    h += '<button data-a="send_otp">إرسال كود التحقق الرقمي (OTP)</button>';
-    h += '<div id="otp_sec" style="display:none; margin-top:14px; background:var(--infob); padding:14px; border-radius:12px; border:1px solid var(--info)">';
-    h += '<label style="color:var(--info); text-align:center;">أدخل كود التحقق المكون من 6 أرقام:</label>';
-    h += '<input type="text" id="otp_val" maxlength="6" class="otp-box" placeholder="123456">';
-    h += '<button data-a="verify_otp" style="margin-top:10px">تأكيد كود التحقق والربط الآن</button>';
-    h += '<div id="otp_status" style="margin-top:8px; font-size:13px; text-align:center; font-weight:bold;"></div>';
-    h += '</div>';
-  }
-  h += '</div>';
+  h += '<button data-a="save_email">حفظ بريد المزامنة</button></div>';
 
   h += '<div class="card"><h2>⚙️ تعديل أرصدة الإجازات السنوية المستحقة</h2>';
   h += '<div class="row"><div><label>السنوية</label><input type="number" id="qa" value="'+Q('annual')+'"></div><div><label>العارضة</label><input type="number" id="qc" value="'+Q('casual')+'"></div><div><label>المرضية</label><input type="number" id="qs" value="'+Q('sick')+'"></div></div>';
@@ -725,7 +708,7 @@ function render(){
 
   var viewFn = { today: vToday, leave: vLeave, work: vWork, weekends: vWeekends, shift: vShift, law: vLaw, rep: vRep, settings: vSettings }[tab];
   
-  var brandHeader = '<div class="brand-header"><div class="brand">'+ICON_SVG+'<b>Monzer App (v16 OTP)</b></div><button class="theme-toggle" id="t-toggle" title="تبديل الوضع">🌙</button></div>';
+  var brandHeader = '<div class="brand-header"><div class="brand">'+ICON_SVG+'<b>Monzer App (v15 Ultimate)</b></div><button class="theme-toggle" id="t-toggle" title="تبديل الوضع">🌙</button></div>';
   
   document.getElementById('app').innerHTML = brandHeader + viewFn();
   document.getElementById('nav').innerHTML = TABS.map(function(t){
@@ -890,41 +873,9 @@ document.addEventListener('click', function(e){
     S.profitMonths = parseFloat(V('pmonths')) || 0;
     alert('تم حفظ نسبة الأشهر وحساب الأرباح بنجاح ✅');
   }
-  else if(a === 'send_otp'){
-    var em = V('uemail');
-    if(!em || !em.includes('@')){
-      alert('يرجى إدخال بريد إلكتروني صحيح أولاً');
-      return;
-    }
-    tempOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    var sec = document.getElementById('otp_sec');
-    var st = document.getElementById('otp_status');
-    if(sec) sec.style.display = 'block';
-    if(st){
-      st.style.color = 'var(--info)';
-      st.innerHTML = '📩 تم توليد وتجهيز كود التحقق الرقمي إلى البريد الإلكتروني.<br><span style="color:var(--ok); font-size:16px;">(الكود الخاص بك للتأكيد: ' + tempOtp + ')</span>';
-    }
-  }
-  else if(a === 'verify_otp'){
-    var inputVal = V('otp_val');
-    var st = document.getElementById('otp_status');
-    if(inputVal && inputVal === tempOtp){
-      S.email = V('uemail');
-      S.emailVerified = true;
-      save();
-      alert('تم تأكيد وربط البريد الإلكتروني بنجاح ✅');
-      render();
-    } else {
-      if(st){
-        st.style.color = 'var(--wr)';
-        st.textContent = '❌ كود التحقق غير صحيح، تأكد من إدخال الـ 6 أرقام بشكل صحيح.';
-      }
-    }
-  }
-  else if(a === 'reset_email'){
-    S.emailVerified = false;
-    save();
-    render();
+  else if(a === 'save_email'){
+    S.email = V('uemail');
+    alert('تم حفظ البريد الإلكتروني للمزامنة ✅');
   }
   else if(a === 'req_notify'){
     if ('Notification' in window) {
