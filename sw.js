@@ -1,7 +1,7 @@
-/* Monzer offline app shell cache. Bump CACHE_NAME when publishing a new app version. */
-var CACHE_NAME = 'monzer-pwa-v5';
-var APP_SHELL = ['./', './index.html'];
-var OWN_CACHE_PREFIX = 'monzer-pwa-';
+/* Dawami PWA app shell. Bump CACHE_NAME for each published release. */
+var CACHE_NAME = 'duwami-pwa-v19-1';
+var APP_SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
+var OWN_CACHE_PREFIXES = ['duwami-pwa-', 'monzer-pwa-'];
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -15,7 +15,8 @@ self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
       return Promise.all(keys.map(function(key) {
-        if (key.indexOf(OWN_CACHE_PREFIX) === 0 && key !== CACHE_NAME) {
+        var isOurCache = OWN_CACHE_PREFIXES.some(function(prefix) { return key.indexOf(prefix) === 0; });
+        if (isOurCache && key !== CACHE_NAME) {
           return caches.delete(key);
         }
       }));

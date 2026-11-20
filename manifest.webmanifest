@@ -1,34 +1,19 @@
 {
   "id": "./",
-  "name": "MonzerSmart",
-  "short_name": "MonzerSmart",
-  "description": "تطبيق إدارة الحضور والإجازات والورديات التناوبية بذكاء",
+  "name": "دوامي — الحضور والإجازات",
+  "short_name": "دوامي",
+  "description": "تطبيق محلي لمتابعة الحضور والانصراف والإجازات والورديات والتقارير.",
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0f766e",
+  "background_color": "#f8fafc",
   "theme_color": "#0f766e",
+  "categories": ["business", "productivity"],
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

@@ -4,9 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Monzer App - مُنذِر (v16.1 Ultimate Data Safe)</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232dd4bf'/%3E%3Cstop offset='1' stop-color='%230f766e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23g)'/%3E%3Ccircle cx='256' cy='262' r='140' fill='none' stroke='white' stroke-width='30'/%3E%3Cpath d='M256 176v90l62 40' fill='none' stroke='white' stroke-width='30' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='380' cy='132' r='42' fill='%23fbbf24' stroke='%230f766e' stroke-width='14'/%3E%3C/svg%3E">
+<title>دوامي | الحضور والإجازات (v19.1)</title>
+<link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="application-name" content="دوامي">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="دوامي">
 <style>
 :root{
   --bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--pr:#0f766e;--pr-hover:#115e59;--prt:#ffffff;
@@ -28,11 +32,12 @@
 }
 *{box-sizing:border-box;transition:background-color .2s,border-color .2s}
 html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;-webkit-tap-highlight-color:transparent}
-main{padding:16px 14px 100px;max-width:640px;margin:auto}
+main{padding:16px 14px 112px;max-width:640px;margin:auto}
 .brand-header{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px}
 .brand{display:flex;align-items:center;gap:12px}
 .brand svg{width:44px;height:44px;border-radius:12px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15))}
-.brand b{font-size:22px;letter-spacing:.3px;color:var(--tx)}
+.brand b{font-size:21px;letter-spacing:.1px;color:var(--tx)}
+.brand small{display:block;color:var(--mu);font-size:11px;font-weight:600;letter-spacing:0;margin-top:1px}
 .theme-toggle{background:transparent;border:1px solid var(--bd);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tx);margin:0}
 h1{font-size:22px;margin:4px 0 2px;font-weight:800}
 h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:6px;color:var(--tx)}
@@ -45,6 +50,7 @@ input,select,textarea{width:100%;padding:12px;border:1px solid var(--bd);border-
 input:focus,select:focus,textarea:focus{border-color:var(--pr);box-shadow:0 0 0 3px rgba(45,212,191,0.15)}
 button{font:inherit;border:0;border-radius:12px;padding:13px 16px;background:var(--pr);color:var(--prt);font-weight:700;width:100%;margin-top:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 button:active{transform:scale(0.98)}
+button:disabled{opacity:.48;cursor:not-allowed;transform:none}
 button.sec{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
 button.x{width:auto;margin:0;padding:6px 12px;background:transparent;color:var(--wr);border:1px solid var(--bd);font-size:13px;font-weight:500}
 .big{font-size:24px;font-weight:800;color:var(--pr)}
@@ -61,10 +67,23 @@ button.x{width:auto;margin:0;padding:6px 12px;background:transparent;color:var(-
 .bar{height:10px;background:var(--bd);border-radius:10px;overflow:hidden;margin:6px 0 12px}
 .bar i{display:block;height:100%;background:var(--pr);border-radius:10px;transition:width 0.4s ease}
 nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,0.05)}
-nav a{flex:1;text-align:center;padding:10px 2px 6px;font-size:10px;color:var(--mu);cursor:pointer;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px}
-nav a span{font-size:18px;line-height:1}
+nav a{flex:1;text-align:center;padding:9px 2px 6px;font-size:10px;color:var(--mu);cursor:pointer;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;min-width:0}
+nav a .nav-icon{width:19px;height:19px;display:block}
+nav a .nav-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav a:focus-visible{outline:2px solid var(--pr);outline-offset:-2px;border-radius:8px}
 nav a.on{color:var(--pr);font-weight:800}
 .empty{color:var(--mu);font-size:14px;padding:12px 0;text-align:center}
+.smart-answer{white-space:pre-line;min-height:24px;padding:10px 12px;border-radius:10px;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.55}
+.smart-chip{width:auto;margin:6px 6px 0 0;padding:8px 11px;font-size:12px}
+.offline-status{text-align:center;font-size:11px;color:var(--mu);min-height:16px;margin:-8px 0 12px}
+.storage-status{text-align:center;font-size:11px;color:var(--mu);line-height:1.4;margin:-8px 0 12px}
+.storage-status.warning{color:var(--wr);background:var(--wb);border:1px solid var(--wr);border-radius:9px;padding:7px;margin-top:-6px}
+.audit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.audit-tile{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px 8px;text-align:center;min-width:0}
+.audit-tile strong{display:block;color:var(--pr);font-size:21px;line-height:1.2}
+.audit-tile small{display:block;color:var(--mu);font-size:11px;margin-top:4px}
+.audit-list{margin-top:8px}
+@media(max-width:430px){main{padding-bottom:124px}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding-top:4px;padding-bottom:env(safe-area-inset-bottom,4px)}nav a{min-height:43px;padding:4px 2px;font-size:10px}nav a .nav-icon{width:18px;height:18px}}
 </style>
 </head>
 <body>
@@ -72,7 +91,11 @@ nav a.on{color:var(--pr);font-weight:800}
 <nav id="nav"></nav>
 
 <script>
-var KEY = 'monzer_app_v16';
+var KEY = 'monzer_app_v14'; // keep the established key so existing local data is preserved
+var storageLocked = false;
+var storageWriteFailed = false;
+var storageProblem = '';
+var storagePersistence = 'checking';
 var S = {
   email: '',
   salary: 0,
@@ -80,6 +103,8 @@ var S = {
   profitMonths: 0,
   theme: 'auto',
   att: {},
+  breaks: {},
+  schedules: [],
   leaves: [],
   ot: [],
   work: [],
@@ -89,24 +114,107 @@ var S = {
   shiftRates: { mid: 0, night: 0 },
   ramadanOtRate: 0,
   customHourlyRate: 0,
-  fixedOtPay: 0,
   taxBracketChoice: 'auto',
   quota: { annual: 30, casual: 7, sick: 10 },
   manualRepEarned: 0,
-  manualRepDeducted: 0
+  manualRepDeducted: 0,
+  workRules: { inMax: '07:50', outMin: '15:50', weekendMode: 'fri_sat' }
 };
+
+function hasValidStateShape(raw){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw)||!raw.att||typeof raw.att!=='object'||Array.isArray(raw.att))return false;
+  var arrays=['schedules','leaves','ot','work','shifts','ramadanAtt','ramadanOt'];
+  var objects=['breaks','shiftRates','quota','workRules'];
+  if(arrays.some(function(k){return Object.prototype.hasOwnProperty.call(raw,k)&&!Array.isArray(raw[k]);}))return false;
+  if(objects.some(function(k){return Object.prototype.hasOwnProperty.call(raw,k)&&(!raw[k]||typeof raw[k]!=='object'||Array.isArray(raw[k]));}))return false;
+  return true;
+}
 
 try {
   var saved = localStorage.getItem(KEY);
-  if (saved) S = Object.assign(S, JSON.parse(saved));
-  if (!S.shifts) S.shifts = [];
-  if (!S.ramadanAtt) S.ramadanAtt = [];
-  if (!S.ramadanOt) S.ramadanOt = [];
-  if (!S.shiftRates) S.shiftRates = { mid: 0, night: 0 };
-} catch(e) {}
+  if (saved) {
+    var loaded = JSON.parse(saved);
+    if (!hasValidStateShape(loaded)) throw new Error('Invalid saved data shape');
+    S = normalizeState(loaded);
+  }
+} catch(e) {
+  storageLocked = true;
+  storageProblem = 'تعذرت قراءة بيانات التطبيق المحفوظة. لم أستبدلها؛ استعد نسخة احتياطية من الإعدادات قبل متابعة الحفظ.';
+}
+
+function isDateValue(v){
+  if(typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  var p=v.split('-').map(Number), d=new Date(p[0],p[1]-1,p[2],12);
+  return d.getFullYear()===p[0] && d.getMonth()===p[1]-1 && d.getDate()===p[2];
+}
+function isTimeValue(v){ return typeof v==='string' && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(v); }
+function nonNegative(v, fallback){ var n=Number(v); return Number.isFinite(n) && n>=0 && n<=1000000000 ? n : fallback; }
+function safeId(v, fallback){ var n=Number(v); return Number.isSafeInteger(n) && n>=0 ? n : fallback; }
+function normalizeState(raw){
+  var d={email:'',salary:0,basicSalary:0,profitMonths:0,theme:'auto',att:{},breaks:{},schedules:[],leaves:[],ot:[],work:[],shifts:[],ramadanAtt:[],ramadanOt:[],shiftRates:{mid:0,night:0},ramadanOtRate:0,customHourlyRate:0,taxBracketChoice:'auto',quota:{annual:30,casual:7,sick:10},manualRepEarned:0,manualRepDeducted:0,workRules:{inMax:'07:50',outMin:'15:50',weekendMode:'fri_sat'}};
+  raw=raw && typeof raw==='object' && !Array.isArray(raw) ? raw : {};
+  var out=Object.assign({},d);
+  ['salary','basicSalary','profitMonths','ramadanOtRate','customHourlyRate','manualRepEarned','manualRepDeducted'].forEach(function(k){out[k]=nonNegative(raw[k],d[k]);});
+  out.email=(typeof raw.email==='string' && raw.email.length<=254 && /^[^\s<>"']+@[^\s<>"']+\.[^\s<>"']+$/.test(raw.email))?raw.email:'';
+  out.theme=['auto','dark','light'].indexOf(raw.theme)>=0?raw.theme:'auto';
+  out.taxBracketChoice=['auto','0','10','15','20','22.5','25','27.5'].indexOf(String(raw.taxBracketChoice))>=0?String(raw.taxBracketChoice):'auto';
+  out.quota={annual:nonNegative(raw.quota&&raw.quota.annual,30),casual:nonNegative(raw.quota&&raw.quota.casual,7),sick:nonNegative(raw.quota&&raw.quota.sick,10)};
+  out.shiftRates={mid:nonNegative(raw.shiftRates&&raw.shiftRates.mid,0),night:nonNegative(raw.shiftRates&&raw.shiftRates.night,0)};
+  var wr=raw.workRules&&typeof raw.workRules==='object'?raw.workRules:{};
+  out.workRules={inMax:isTimeValue(wr.inMax)?wr.inMax:'07:50',outMin:isTimeValue(wr.outMin)?wr.outMin:'15:50',weekendMode:['fri_sat','sat_sun','fri','sat','none'].indexOf(wr.weekendMode)>=0?wr.weekendMode:'fri_sat'};
+  var att=raw.att&&typeof raw.att==='object'&&!Array.isArray(raw.att)?raw.att:{};
+  Object.keys(att).forEach(function(k){var r=att[k]||{};if(isDateValue(k))out.att[k]={in:isTimeValue(r.in)?r.in:'',out:isTimeValue(r.out)?r.out:''};});
+  var arr=function(v){return Array.isArray(v)?v:[];};
+  out.schedules=arr(raw.schedules).filter(function(x){return x&&Number.isInteger(Number(x.weekday))&&Number(x.weekday)>=0&&Number(x.weekday)<=6&&isTimeValue(x.start)&&isTimeValue(x.end);}).map(function(x,i){return{id:safeId(x.id,i+1),weekday:Number(x.weekday),start:x.start,end:x.end,breakMinutes:Math.min(300,nonNegative(x.breakMinutes,0)),enabled:x.enabled!==false};});
+  var br=raw.breaks&&typeof raw.breaks==='object'&&!Array.isArray(raw.breaks)?raw.breaks:{};
+  Object.keys(br).forEach(function(k){if(!isDateValue(k)||!Array.isArray(br[k]))return;var entries=br[k].filter(function(x){return x&&isTimeValue(x.start)&&(!x.end||isTimeValue(x.end));}).map(function(x){return{start:x.start,end:isTimeValue(x.end)?x.end:''};});if(entries.length)out.breaks[k]=entries;});
+  out.leaves=arr(raw.leaves).filter(function(x){return x&&isDateValue(x.date)&&['annual','casual','sick','replacement'].indexOf(x.type)>=0&&nonNegative(x.days,0)>0;}).map(function(x,i){return{id:safeId(x.id,i+1),gid:safeId(x.gid,safeId(x.id,i+1)),date:x.date,type:x.type,days:Math.min(365,nonNegative(x.days,0))};});
+  out.ot=arr(raw.ot).filter(function(x){return x&&isDateValue(x.date)&&isTimeValue(x.from)&&isTimeValue(x.to);}).map(function(x,i){return{id:safeId(x.id,i+1),date:x.date,from:x.from,to:x.to,customPay:nonNegative(x.customPay,0)};});
+  out.work=arr(raw.work).filter(function(x){return x&&isDateValue(x.date)&&['weekend','holiday'].indexOf(x.kind)>=0;}).map(function(x,i){return{id:safeId(x.id,i+1),date:x.date,kind:x.kind,customPay:nonNegative(x.customPay,0)};});
+  out.shifts=arr(raw.shifts).filter(function(x){return x&&isDateValue(x.date)&&['mid','night'].indexOf(x.type)>=0&&isTimeValue(x.in)&&isTimeValue(x.out);}).map(function(x,i){return{id:safeId(x.id,i+1),date:x.date,type:x.type,in:x.in,out:x.out,rate:nonNegative(x.rate,0)};});
+  out.ramadanAtt=arr(raw.ramadanAtt).filter(function(x){return x&&isDateValue(x.date)&&isTimeValue(x.in)&&isTimeValue(x.out);}).map(function(x,i){return{id:safeId(x.id,i+1),date:x.date,in:x.in,out:x.out};});
+  out.ramadanOt=arr(raw.ramadanOt).filter(function(x){return x&&isDateValue(x.date)&&isTimeValue(x.from)&&isTimeValue(x.to);}).map(function(x,i){return{id:safeId(x.id,i+1),date:x.date,from:x.from,to:x.to,otRate:nonNegative(x.otRate,0)};});
+  if(typeof raw._ym==='string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(raw._ym))out._ym=raw._ym;
+  return out;
+}
+S=normalizeState(S);
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
+  if (storageLocked) return false;
+  try {
+    localStorage.setItem(KEY, JSON.stringify(S));
+    storageWriteFailed = false;
+    storageProblem = '';
+    return true;
+  } catch(e) {
+    storageWriteFailed = true;
+    storageProblem = 'تعذر حفظ آخر تعديل في هذا المتصفح. صدّر نسخة احتياطية الآن، ولا تغلق الصفحة قبل معالجة السبب.';
+    return false;
+  }
+}
+
+function updateStorageStatus(){
+  var el=document.getElementById('storage-status');
+  if(!el)return;
+  if(storageLocked||storageWriteFailed){el.className='storage-status warning';el.textContent=storageProblem||'تعذر حفظ بيانات التطبيق.';return;}
+  el.className='storage-status';
+  if(storagePersistence==='persistent')el.textContent='حفظ البيانات يعمل محلياً، والمتصفح أكد حماية تخزين الموقع من الإخلاء التلقائي.';
+  else if(storagePersistence==='best-effort')el.textContent='حفظ البيانات محلياً يعمل؛ اطلب حماية التخزين من الإعدادات. يظل النسخ الاحتياطي مهماً.';
+  else if(storagePersistence==='unsupported')el.textContent='حفظ البيانات محلياً يعمل؛ هذا المتصفح لا يوفّر تأكيد التخزين المحمي. احتفظ بنسخة احتياطية.';
+  else el.textContent='يُحفظ العمل على هذا الجهاز؛ يجري التحقق من سياسة احتفاظ المتصفح بالبيانات.';
+}
+
+function inspectStoragePersistence(){
+  if(!navigator.storage||!navigator.storage.persisted){storagePersistence='unsupported';updateStorageStatus();return;}
+  navigator.storage.persisted().then(function(p){storagePersistence=p?'persistent':'best-effort';updateStorageStatus();}).catch(function(){storagePersistence='unsupported';updateStorageStatus();});
+}
+
+function requestPersistentStorage(){
+  if(!navigator.storage||!navigator.storage.persist){alert('هذا المتصفح لا يدعم طلب حماية التخزين. صدّر نسخة احتياطية دورياً.');return;}
+  navigator.storage.persist().then(function(granted){
+    storagePersistence=granted?'persistent':'best-effort';updateStorageStatus();
+    alert(granted?'وافق المتصفح على حماية تخزين بيانات هذا الموقع من الإخلاء التلقائي. يظل بإمكان المستخدم مسح بيانات الموقع يدوياً.':'لم يمنح المتصفح حماية التخزين؛ بياناتك ما زالت محلية، لذا احتفظ بنسخة JSON دورية.');
+  }).catch(function(){storagePersistence='unsupported';updateStorageStatus();alert('تعذر طلب حماية التخزين من المتصفح.');});
 }
 
 var p2 = function(n){ return String(n).padStart(2,'0'); };
@@ -116,15 +224,63 @@ var mins = function(t){ if(!t) return 0; var a=t.split(':'); return +a[0]*60 + +
 var V = function(id){ var e=document.getElementById(id); return e?e.value:''; };
 var NAMES = { annual:'سنوية', casual:'عارضة', sick:'مرضية', replacement:'بدل' };
 var IN_MAX = '07:50', OUT_MIN = '15:50';
+function workRules(){ return S.workRules || {inMax:IN_MAX,outMin:OUT_MIN,weekendMode:'fri_sat'}; }
+function isRestDay(day){ var m=workRules().weekendMode; return m==='fri_sat'?(day===5||day===6):m==='sat_sun'?(day===6||day===0):m==='fri'?day===5:m==='sat'?day===6:false; }
+function icalDays(){ return ['SU','MO','TU','WE','TH','FR','SA'].filter(function(_,i){return !isRestDay(i);}).join(','); }
+function nextWorkday(){ var d=new Date();d.setHours(12,0,0,0);while(isRestDay(d.getDay()))d.setDate(d.getDate()+1);return ds(d); }
+function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function validDateInput(v){ return isDateValue(v); }
+function uniqueDate(list,date,kind){ return !list.some(function(x){return x.date===date&&(!kind||x.kind===kind);}); }
+var DAY_NAMES=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+function weekdayOf(date){return new Date(date+'T12:00:00').getDay();}
+function scheduleForDate(date){return S.schedules.find(function(x){return x.weekday===weekdayOf(date)&&x.enabled!==false;})||null;}
+function activeAttendanceDate(today){today=today||ds(new Date());var prev=new Date(today+'T12:00:00');prev.setDate(prev.getDate()-1);var candidates=[today,ds(prev)];for(var i=0;i<candidates.length;i++){var r=S.att[candidates[i]];if(r&&r.in&&!r.out)return candidates[i];}return null;}
+function durationMinutes(from,to){if(!isTimeValue(from)||!isTimeValue(to))return 0;var n=mins(to)-mins(from);if(n<0)n+=1440;return n;}
+function shiftRelativeMinute(time,shift){var n=mins(time);if(mins(shift.end)<=mins(shift.start)&&n<mins(shift.start))n+=1440;return n;}
+function openBreak(date){var a=S.breaks[date]||[];for(var i=a.length-1;i>=0;i--)if(!a[i].end)return a[i];return null;}
+function totalBreakMinutes(date,includeRunning){return (S.breaks[date]||[]).reduce(function(sum,b){if(b.end)return sum+durationMinutes(b.start,b.end);if(includeRunning&&date===activeAttendanceDate())return sum+durationMinutes(b.start,ts(new Date()));return sum;},0);}
+function netWorkMinutes(date){var r=S.att[date];if(!r||!r.in||!r.out)return null;return Math.max(0,durationMinutes(r.in,r.out)-totalBreakMinutes(date,false));}
+function fmtMinutes(n){return Math.floor(n/60)+' ساعة و'+(n%60)+' دقيقة';}
+function dayListBack(count){var a=[],d=new Date();d.setHours(12,0,0,0);for(var i=0;i<count;i++){var x=new Date(d);x.setDate(d.getDate()-i);a.push(ds(x));}return a;}
+function findOpenBreakDate(){var active=activeAttendanceDate();if(active&&openBreak(active))return active;var today=ds(new Date()),prev=new Date(today+'T12:00:00');prev.setDate(prev.getDate()-1);var prior=ds(prev);return openBreak(today)?today:(openBreak(prior)?prior:null);}
+function getExceptions(count){
+  var today=ds(new Date()), active=activeAttendanceDate(today), out=[], dates=dayListBack(count||14);
+  dates.forEach(function(date){
+    var sh=scheduleForDate(date), r=S.att[date]||null, leave=S.leaves.some(function(l){return l.date===date;});
+    var ram=S.ramadanAtt.find(function(x){return x.date===date;});
+    if(sh && date<today && !leave && !(r&&r.in) && !ram)out.push({date:date,kind:'w',title:'دوام مجدول بلا تسجيل حضور',detail:DAY_NAMES[weekdayOf(date)]+' — '+sh.start+' إلى '+sh.end+'؛ تحقّق من السجل قبل اعتباره غياباً.'});
+    if(r&&r.in){
+      if(!r.out){var overdue=(date<today&&(date!==active||!sh))||(date===active&&sh&&shiftRelativeMinute(ts(new Date()),sh)>shiftRelativeMinute(sh.end,sh));if(overdue)out.push({date:date,kind:'w',title:'تسجيل حضور بلا انصراف',detail:'سجّل وقت الانصراف أو صحّح السجل يدوياً.'});}
+      if(sh&&r.in){var late=mins(r.in)-mins(sh.start);if(late>0)out.push({date:date,kind:'w',title:'حضور بعد بداية الوردية',detail:'تأخير مسجل: '+late+' دقيقة مقارنة بموعد '+sh.start+'.'});}
+      if(sh&&r.out){var early=shiftRelativeMinute(r.out,sh)-shiftRelativeMinute(sh.end,sh);if(early<0)out.push({date:date,kind:'w',title:'انصراف قبل نهاية الوردية',detail:'الانصراف '+r.out+'؛ الموعد المجدول '+sh.end+'.'});}
+      if(sh&&r.out&&sh.breakMinutes>0&&totalBreakMinutes(date,false)===0)out.push({date:date,kind:'i',title:'لا توجد استراحة مسجلة',detail:'الوردية تتضمن '+sh.breakMinutes+' دقيقة استراحة مخططة؛ راجع السجل إذا انطبقت.'});
+      if(sh&&totalBreakMinutes(date,false)>sh.breakMinutes+10)out.push({date:date,kind:'w',title:'استراحة أطول من المخطط',detail:'المسجل '+totalBreakMinutes(date,false)+' دقيقة مقابل '+sh.breakMinutes+' دقيقة مخططة.'});
+    }
+    var ob=openBreak(date);if(ob&&date<today&&date!==active)out.push({date:date,kind:'w',title:'استراحة مفتوحة من يوم سابق',detail:'سجّل نهايتها أو صحّح وقتها.'});
+  });
+  return out;
+}
 
+var ICONS = {
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  leave:'<path d="M20 4c-8 0-14 4-14 11a5 5 0 0 0 5 5c7 0 11-6 9-16Z"/><path d="M5 20c3-5 6-7 11-10"/>',
+  timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 2v3"/>',
+  gift:'<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8H8a2 2 0 1 1 2-2l2 2Zm0 0h4a2 2 0 1 0-2-2l-2 2Z"/>',
+  repeat:'<path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4m14-1v2a3 3 0 0 1-3 3H3"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+  chart:'<path d="M4 19V5M4 19h17M8 16v-5M13 16V7M18 16v-8"/>',
+  settings:'<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m19.4 15 .1.1 1 1.7-1.8 3-2-.4a8 8 0 0 1-1.6.9l-.7 1.7h-3.5l-.7-1.7a8 8 0 0 1-1.6-.9l-2 .4-1.8-3 1-1.7A8 8 0 0 1 5.7 13l-1.8-.8V8.7l1.8-.8a8 8 0 0 1 .6-1.5l-1-1.8 1.8-3 2 .4a8 8 0 0 1 1.6-.9l.7-1.7h3.5l.7 1.7a8 8 0 0 1 1.6.9l2-.4 1.8 3-1 1.8a8 8 0 0 1 .6 1.5l1.8.8v3.5l-1.8.8a8 8 0 0 1-.6 1.5Z" transform="translate(0 2) scale(.88)"/>',
+  brand:''
+};
 var TABS = [
-  ['today', '🕗', 'الحضور'],
-  ['leave', '🏖️', 'الإجازات'],
-  ['work', '⏱️', 'الإضافي والسهر'],
-  ['weekends', '📅', 'أيام البدل'],
-  ['shift', '🔄', 'الورديات'],
-  ['rep', '📊', 'التقرير'],
-  ['settings', '⚙️', 'الإعدادات']
+  ['today', 'clock', 'الحضور'],
+  ['leave', 'leave', 'الإجازات'],
+  ['work', 'timer', 'الإضافي والسهر'],
+  ['weekends', 'gift', 'أيام البدل'],
+  ['shift', 'repeat', 'الورديات'],
+  ['schedule', 'calendar', 'الجدول'],
+  ['rep', 'chart', 'التقرير'],
+  ['settings', 'settings', 'الإعدادات']
 ];
 
 var tab = 'today';
@@ -161,13 +317,14 @@ function hourlyRate(){ return S.customHourlyRate > 0 ? S.customHourlyRate : ((+S
 function dailyRate(){ return (+S.salary || 0) / 30; }
 
 function otHours(o){
-  var h = (mins(o.to) - mins(o.from)) / 60;
-  return Math.max(0, Math.round(h * 100) / 100);
+  if(!o || !isTimeValue(o.from) || !isTimeValue(o.to)) return 0;
+  var delta=mins(o.to)-mins(o.from);
+  if(delta<0) delta+=1440;
+  return Math.round(delta/60*100)/100;
 }
 
 function otPay(o){
   if (o.customPay > 0) return o.customPay;
-  if (S.fixedOtPay > 0) return S.fixedOtPay;
   var hrs = otHours(o);
   var hr = hourlyRate();
   return hrs * hr;
@@ -187,18 +344,72 @@ function dayName(d){
   return new Date(d+'T12:00:00').toLocaleDateString('ar-EG', { weekday:'long', day:'numeric', month:'long' });
 }
 
+function answerSmartQuery(raw){
+  var q=String(raw||'').trim().toLowerCase();
+  if(!q)return 'اكتب سؤالك أو اختر أحد الأمثلة. أستطيع تلخيص الحضور، التأخير، الإجازات، السهر، والبدلات المسجلة.';
+  var now=new Date(),ym=ds(now).slice(0,7),year=now.getFullYear();
+  if(/تأخر|تأخير|متأخر|انصراف مبكر/.test(q)){
+    var days=Object.keys(S.att).filter(function(k){return k.slice(0,7)===ym;});
+    var late=days.filter(function(k){var sh=scheduleForDate(k);return S.att[k].in&&mins(S.att[k].in)>mins(sh?sh.start:workRules().inMax);}).length;
+    var early=days.filter(function(k){var sh=scheduleForDate(k);return S.att[k].out&&(sh?shiftRelativeMinute(S.att[k].out,sh)<shiftRelativeMinute(sh.end,sh):mins(S.att[k].out)<mins(workRules().outMin));}).length;
+    return 'هذا الشهر ('+ym+'): '+late+' تسجيلات حضور متأخر و'+early+' تسجيلات انصراف مبكر، وفق مواعيدك المحفوظة.';
+  }
+  if(/بدل|تعويض/.test(q)&&/رصيد|متبقي|إجاز|اجاز|كم/.test(q))return 'رصيد إجازة البدل المتبقي: '+replacementBalance()+' يوم. هذا تقدير من سجلات أيام العمل المسجلة والتسويات اليدوية.';
+  if(/إجاز|اجاز|رصيد/.test(q)){
+    var types=['annual','casual','sick'],lines=types.map(function(k){return NAMES[k]+': '+Math.max(0,Q(k)-used(year,k))+' من '+Q(k)+' يوم متبقٍ';});
+    lines.push('بدل: '+replacementBalance()+' يوم متبقٍ');
+    return 'أرصدة الإجازات للسنة '+year+':\n'+lines.join('\n');
+  }
+  if(/سهر|إضاف|اضاف|عمل إضاف|مستحق|بدلات/.test(q)){
+    var ot=S.ot.filter(function(x){return x.date.slice(0,7)===ym;}),work=S.work.filter(function(x){return x.date.slice(0,7)===ym;}),shifts=S.shifts.filter(function(x){return x.date.slice(0,7)===ym;}),ram=S.ramadanOt.filter(function(x){return x.date.slice(0,7)===ym;});
+    var hours=ot.reduce(function(a,x){return a+otHours(x);},0),pay=ot.reduce(function(a,x){return a+otPay(x);},0);
+    pay+=work.reduce(function(a,x){return a+(x.customPay>0?x.customPay:(x.kind==='holiday'?2*dailyRate():dailyRate()));},0);
+    pay+=shifts.reduce(function(a,x){return a+(x.rate||S.shiftRates[x.type]||0);},0);
+    pay+=ram.reduce(function(a,x){return a+(x.otRate||S.ramadanOtRate||0);},0);
+    return 'ملخص الإضافي المسجل لهذا الشهر ('+ym+'):\nساعات السهر: '+hours+' ساعة\nالمبلغ الإضافي والبدلات التقديري: '+money(pay)+'\nلا يشمل ذلك المرتب الأساسي ولا يُعد كشف راتب رسميًا.';
+  }
+  if(/راتب|مرتب|أساسي|اساسي/.test(q))return 'المرتب الشامل المحفوظ: '+money(S.salary||0)+(S.basicSalary?'\nالأجر الأساسي المحفوظ: '+money(S.basicSalary):'')+'\nالقيم المعروضة مأخوذة من إدخالك اليدوي.';
+  if(/سجل.*(?:ناق|مكتمل)|غير.*مكتمل|استكمال/.test(q)){
+    var ymAudit=ds(now).slice(0,7), auditDates=Object.keys(S.att).filter(function(k){return k.slice(0,7)===ymAudit&&S.att[k]&&(S.att[k].in||S.att[k].out);}).sort();
+    var auditPartial=auditDates.filter(function(k){return !(S.att[k].in&&S.att[k].out);});
+    return auditPartial.length?'هذا الشهر ('+ymAudit+'): '+auditPartial.length+' سجل حضور يحتاج مراجعة: '+auditPartial.slice(-5).reverse().map(function(k){var r=S.att[k];return dayName(k)+' ('+(r.in?'حضور '+r.in:'دون حضور')+'، '+(r.out?'انصراف '+r.out:'دون انصراف')+')';}).join('؛ ')+'. هذه مراجعة للسجلات وليست استنتاجاً عن الغياب.':'لا توجد سجلات جزئية للحضور هذا الشهر ('+ymAudit+').';
+  }
+  if(/استثناء|ناقص|مشكلة|مراجعة/.test(q)){
+    var ex=getExceptions(30);
+    return ex.length?'وجدت '+ex.length+' مؤشراً للمراجعة في آخر 30 يوماً. أول مؤشر: '+ex[0].title+' — '+dayName(ex[0].date)+'. هذه تنبيهات وليست إثباتاً للغياب أو مخالفة.':'لا توجد مؤشرات مراجعة ظاهرة في آخر 30 يوماً.';
+  }
+  if(/حضور|دوام|اليوم/.test(q)){
+    var date=activeAttendanceDate(ds(now))||ds(now),rec=S.att[date]||{};
+    return 'سجل '+dayName(date)+': الحضور '+(rec.in||'غير مسجل')+'، والانصراف '+(rec.out||'غير مسجل')+'.';
+  }
+  return 'لم أفهم السؤال بعد. جرّب: «كم رصيد إجازاتي؟»، «كم مرة تأخرت هذا الشهر؟»، «كم الإضافي المسجل؟»، أو «ما حالة حضوري اليوم؟»';
+}
+
 function vToday(){
-  var n = new Date(), d = ds(n), r = S.att[d] || {};
-  var late = r.in && mins(r.in) > mins(IN_MAX);
-  var early = r.out && mins(r.out) < mins(OUT_MIN);
+  var n = new Date(), d = ds(n), activeD=activeAttendanceDate(d), workD=activeD||d, r = S.att[workD] || {}, todayRec=S.att[d]||{};
+  var schedToday=scheduleForDate(workD), currentBreak=openBreak(workD), todayBreakMinutes=totalBreakMinutes(workD,true);
+  var late = r.in && mins(r.in) > mins(schedToday?schedToday.start:workRules().inMax);
+  var early = r.out && (schedToday?shiftRelativeMinute(r.out,schedToday)<shiftRelativeMinute(schedToday.end,schedToday):mins(r.out)<mins(workRules().outMin));
   
-  var h = '<h1>Monzer App - تسجيل الحضور والوقت</h1><div class="sub">'+n.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</div>'+banner();
+  var currentMonth=ds(n).slice(0,7);
+  var monthAttDates=Object.keys(S.att).filter(function(k){return k.slice(0,7)===currentMonth;}).filter(function(k){return S.att[k]&&(S.att[k].in||S.att[k].out);}).sort();
+  var completeAttCount=monthAttDates.filter(function(k){return S.att[k].in&&S.att[k].out;}).length;
+  var partialAttDates=monthAttDates.filter(function(k){return !(S.att[k].in&&S.att[k].out);});
+  var h = '<h1>دوامي — تسجيل الحضور والوقت</h1><div class="sub">'+n.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</div>'+banner();
+  var statusText = activeD&&activeD!==d ? 'الوردية مستمرة منذ '+dayName(activeD)+'؛ سجّل الانصراف عند انتهائها.' : (!r.in ? 'لم يُسجّل حضور اليوم بعد.' : (!r.out ? 'تم تسجيل الحضور، ولم يُسجّل الانصراف بعد.' : 'اكتمل تسجيل الحضور والانصراف لهذا اليوم.'));
+  h += '<div class="card" style="border-inline-start:4px solid var(--pr)"><h2>🧠 حالة اليوم</h2><div>'+statusText+'</div>'+(late?'<div class="sub" style="margin:6px 0 0;color:var(--wr)">ملاحظة: وقت الحضور بعد الحد المحدد ('+workRules().inMax+').</div>':'')+(r.in&&r.out?'<div class="sub" style="margin:6px 0 0">المدة المسجلة: '+(function(){var m=mins(r.out)-mins(r.in);if(m<0)m+=1440;return Math.floor(m/60)+' ساعة و'+(m%60)+' دقيقة';})()+'</div>':'')+'</div>';
+  h += '<div class="card smart-audit"><h2>مراجعة السجلات الذكية — '+currentMonth+'</h2><div class="sub">ملخص محلي لسجلات الحضور المسجلة فقط؛ لا يستنتج الغياب ولا يعدّل البيانات.</div><div class="audit-grid"><div class="audit-tile"><strong>'+monthAttDates.length+'</strong><small>أيام لها سجل</small></div><div class="audit-tile"><strong>'+completeAttCount+'</strong><small>مكتمل الحضور والانصراف</small></div><div class="audit-tile"><strong>'+partialAttDates.length+'</strong><small>سجل يحتاج مراجعة</small></div></div>'+(partialAttDates.length?'<div class="audit-list">'+partialAttDates.slice(-5).reverse().map(function(k){var rec=S.att[k];return '<div class="kv"><span>'+dayName(k)+'</span><b>'+(rec.in?'الحضور '+rec.in:'الحضور غير مسجل')+' · '+(rec.out?'الانصراف '+rec.out:'الانصراف غير مسجل')+'</b></div>';}).join('')+'</div>':'<div class="sub">لا توجد سجلات جزئية لهذا الشهر.</div>')+'<button data-t="rep" class="sec">افتح التقرير الشهري</button></div>';
+  h += '<div class="card"><h2>اسأل دوامي — يعمل على جهازك</h2><div class="sub">إجابات فورية من سجلاتك المحلية؛ لا تُرسل بياناتك إلى الإنترنت.</div><label for="smart_q">اكتب سؤالاً</label><input id="smart_q" type="search" placeholder="مثال: كم رصيد إجازاتي؟"><button data-a="smart_ask">اعرض الإجابة</button><div id="smart_answer" class="smart-answer" aria-live="polite">يمكنني تلخيص رصيد الإجازات، التأخير، الحضور، والسهر والبدلات.</div><div><button class="sec smart-chip" data-q="كم رصيد إجازاتي؟">رصيد الإجازات</button><button class="sec smart-chip" data-q="كم مرة تأخرت هذا الشهر؟">التأخير</button><button class="sec smart-chip" data-q="كم الإضافي المسجل؟">الإضافي</button><button class="sec smart-chip" data-q="ما حالة حضوري اليوم؟">حالة اليوم</button><button class="sec smart-chip" data-q="ما السجلات غير المكتملة هذا الشهر؟">السجلات الناقصة</button></div></div>';
   
+  h += '<div class="card"><h2>🗓️ الوردية والاستراحة</h2>'+(activeD&&activeD!==d?'<div class="sub">الوردية الحالية بدأت في '+dayName(workD)+'.</div>':'')+(schedToday?'<div class="kv"><span>الموعد المخطط ('+DAY_NAMES[weekdayOf(workD)]+')</span><b>'+schedToday.start+' – '+schedToday.end+'</b></div><div class="kv"><span>الاستراحة المخططة</span><b>'+schedToday.breakMinutes+' دقيقة</b></div>':'<div class="sub">لا يوجد جدول أسبوعي لهذا اليوم بعد. أضف جدولك من تبويب «الجدول».</div>')+'<div class="kv"><span>الاستراحات المسجلة</span><b>'+todayBreakMinutes+' دقيقة'+(currentBreak?' — استراحة جارية':'')+'</b></div>'+(r.in&&r.out?'<div class="kv"><span>صافي وقت العمل بعد الاستراحات</span><b>'+fmtMinutes(netWorkMinutes(workD))+'</b></div>':'')+'<div class="row"><button data-a="start_break" class="sec" '+(!r.in||r.out||currentBreak?'disabled':'')+'>بدء استراحة</button><button data-a="end_break" class="sec" '+(!currentBreak?'disabled':'')+'>إنهاء الاستراحة</button></div></div>';
+  var todayExceptions=getExceptions(14);
+  h += '<div class="card"><h2>🚦 لوحة الاستثناءات — آخر 14 يوماً</h2>'+(todayExceptions.length?todayExceptions.slice(0,5).map(function(x){return '<div class="li"><span><b>'+x.title+'</b><br><small style="color:var(--mu)">'+dayName(x.date)+' • '+x.detail+'</small></span><span class="bd '+(x.kind==='w'?'w':'i')+'">مراجعة</span></div>';}).join(''):'<div class="empty">لا توجد استثناءات ظاهرة؛ راجع الجدول والتسجيلات دورياً.</div>')+'<button data-t="exceptions" class="sec">عرض لوحة الاستثناءات كاملة</button></div>';
+
   h += '<div class="card">';
-  h += '<h2>⏱️ المواعيد اليومية الرسمية</h2>';
+  h += '<h2>⏱️ المواعيد اليومية الرسمية</h2>'
   h += '<div class="kv"><span>تسجيل الحضور</span><b class="big">'+(r.in || '--:--')+(r.in?' <span class="bd '+(late?'w':'o')+'">'+(late?'متأخر':'في الموعد')+'</span>':'')+'</b></div>';
   h += '<div class="kv"><span>تسجيل الانصراف</span><b class="big">'+(r.out || '--:--')+(r.out?' <span class="bd '+(early?'w':'o')+'">'+(early?'قبل الموعد':'تمام')+'</span>':'')+'</b></div>';
-  h += '<div class="sub" style="margin-top:8px">مواعيد الدوام: الحضور حتى <b>7:50 ص</b>، والانصراف من <b>3:50 م</b></div>';
+  h += '<div class="sub" style="margin-top:8px">مواعيد الدوام: الحضور <b>'+ (schedToday?schedToday.start:workRules().inMax) +'</b>، والانصراف <b>'+ (schedToday?schedToday.end:workRules().outMin) +'</b></div>';
   
   h += '<div class="row" style="margin-top:10px">';
   h += '<button data-a="in">🟢 تسجيل حضور الآن</button>';
@@ -207,13 +418,13 @@ function vToday(){
 
   h += '<div class="card"><h2>✏️ إدخال / تعديل يدوي (حالة النسيان)</h2>';
   h += '<label>التاريخ</label><input type="date" id="md" value="'+d+'">';
-  h += '<div class="row"><div><label>وقت الحضور</label><input type="time" id="mi" value="'+(r.in||'07:50')+'"></div><div><label>وقت الانصراف</label><input type="time" id="mo" value="'+(r.out||'15:50')+'"></div></div>';
+  h += '<div class="row"><div><label>وقت الحضور</label><input type="time" id="mi" value="'+(todayRec.in||'07:50')+'"></div><div><label>وقت الانصراف</label><input type="time" id="mo" value="'+(todayRec.out||'15:50')+'"></div></div>';
   h += '<button data-a="man" class="sec">حفظ التعديل اليدوي</button></div>';
 
   var ks = Object.keys(S.att).sort().reverse().slice(0, 10);
   h += '<div class="card"><h2>📅 سجل الحضور الحديث (مع خيار الحذف)</h2>'+(ks.length ? ks.map(function(k){
     var a = S.att[k];
-    var isL = a.in && mins(a.in) > mins(IN_MAX);
+    var historyShift=scheduleForDate(k), isL = a.in && mins(a.in) > mins(historyShift?historyShift.start:workRules().inMax);
     return '<div class="li"><span><b>'+dayName(k)+'</b><br><small style="color:var(--mu)">حضور: '+(a.in||'--')+' | انصراف: '+(a.out||'--')+(isL ? ' <span class="bd w">تأخير</span>':'')+'</small></span><button class="x" data-a="delatt" data-k="'+k+'">🗑️ حذف</button></div>';
   }).join('') : '<div class="empty">لا توجد تسجيلات أسبوعية بعد</div>') + '</div>';
 
@@ -224,7 +435,7 @@ function leaveDays(a, b, incl){
   var out = [], c = new Date(a+'T12:00:00'), e = new Date(b+'T12:00:00');
   while(c <= e && out.length < 365){
     var g = c.getDay();
-    if(incl || (g !== 5 && g !== 6)) out.push(ds(c));
+    if(incl || !isRestDay(g)) out.push(ds(c));
     c.setDate(c.getDate()+1);
   }
   return out;
@@ -236,7 +447,7 @@ function vLeave(){
   var repEarned = totalReplacementEarned();
   var repTaken = S.leaves.filter(function(l){ return l.type === 'replacement'; }).reduce(function(a,l){ return a + l.days; }, 0);
 
-  var h = '<h1>نظام ورصيد الإجازات (Monzer App)</h1><div class="sub">متابعة الأرصدة السنوية وإجازات البدل والخصم الربع سنوي ('+y+')</div>'+banner();
+  var h = '<h1>دوامي — نظام ورصيد الإجازات</h1><div class="sub">متابعة الأرصدة السنوية وإجازات البدل والخصم الربع سنوي ('+y+')</div>'+banner();
 
   h += '<div class="card"><h2>📊 أرصدة الإجازات المتبقية</h2>';
   ['annual','casual','sick'].forEach(function(k){
@@ -269,7 +480,7 @@ function vLeave(){
   h += '<div class="row"><div><label>من تاريخ</label><input type="date" id="ld" value="'+d+'"></div>';
   h += '<div id="le_wrap"><div><label>إلى تاريخ</label><input type="date" id="le" value="'+d+'"></div></div></div>';
 
-  h += '<label style="display:flex;gap:8px;align-items:center;margin-top:10px;cursor:pointer"><input type="checkbox" id="lw" style="width:auto"> احتساب الجمعة والسبت ضمن أيام الإجازة</label>';
+  h += '<label style="display:flex;gap:8px;align-items:center;margin-top:10px;cursor:pointer"><input type="checkbox" id="lw" style="width:auto"> احتساب أيام الراحة الأسبوعية ضمن أيام الإجازة</label>';
   h += '<button data-a="leave">حفظ وتسجيل الإجازة</button><div id="lm" style="color:var(--wr);font-size:13px;margin-top:6px"></div></div>';
 
   var g = {};
@@ -289,8 +500,26 @@ function vLeave(){
   return h;
 }
 
+function vSchedule(){
+  var today=ds(new Date()), wd=weekdayOf(today), existing=S.schedules.find(function(x){return x.weekday===wd;});
+  var h='<h1>🗓️ جدول الدوام الأسبوعي</h1><div class="sub">أدخل وردية متكررة واحدة لكل يوم من أيام الأسبوع. هذا الجدول مرجعي للتنبيهات ولا يثبت الحضور بذاته.</div>';
+  h+='<div class="card"><h2>إضافة أو تعديل وردية</h2><label>اليوم</label><select id="sched_day">';
+  DAY_NAMES.forEach(function(name,i){h+='<option value="'+i+'" '+(i===wd?'selected':'')+'>'+name+'</option>';});
+  h+='</select><div class="row"><div><label>بداية الوردية</label><input id="sched_start" type="time" value="'+(existing?existing.start:'08:00')+'"></div><div><label>نهاية الوردية</label><input id="sched_end" type="time" value="'+(existing?existing.end:'16:00')+'"></div></div><label>مدة الاستراحة المخططة (دقيقة)</label><input id="sched_break" type="number" min="0" max="300" step="5" value="'+(existing?existing.breakMinutes:30)+'"><button data-a="save_schedule">حفظ الوردية لهذا اليوم</button><div class="sub">إذا كان وقت النهاية أبكر من البداية، تُعامل الوردية كوردية ليلية تعبر منتصف الليل.</div></div>';
+  h+='<div class="card"><h2>الجدول المسجل</h2>';
+  var list=S.schedules.slice().sort(function(a,b){return a.weekday-b.weekday;});
+  h+=list.length?list.map(function(x){return '<div class="li"><span><b>'+DAY_NAMES[x.weekday]+'</b><br><small style="color:var(--mu)">'+x.start+' – '+x.end+' • استراحة '+x.breakMinutes+' دقيقة</small></span><button class="x" data-a="del_schedule" data-i="'+x.id+'">حذف</button></div>';}).join(''):'<div class="empty">لم تضف جدولاً أسبوعياً بعد.</div>';
+  h+='</div><div class="card"><h2>الأيام السبعة القادمة</h2>';
+  for(var i=0;i<7;i++){var dt=new Date();dt.setHours(12,0,0,0);dt.setDate(dt.getDate()+i);var date=ds(dt),sh=scheduleForDate(date);h+='<div class="kv"><span>'+dayName(date)+'</span><b>'+(sh?sh.start+' – '+sh.end:'راحة / لا توجد وردية')+'</b></div>';}
+  h+='</div>';return h;
+}
+function vExceptions(){
+  var items=getExceptions(30),h='<h1>🚦 لوحة الاستثناءات</h1><div class="sub">مؤشرات للمراجعة خلال آخر 30 يوماً. هذه تنبيهات احتمالية وليست قرارات غياب أو مخالفات.</div>';
+  h+='<div class="card">'+(items.length?items.map(function(x){return '<div class="li"><span><b>'+x.title+'</b><br><small style="color:var(--mu)">'+dayName(x.date)+' • '+x.detail+'</small></span><span class="bd '+(x.kind==='w'?'w':'i')+'">مراجعة</span></div>';}).join(''):'<div class="empty">لا توجد استثناءات مكتشفة ضمن الفترة.</div>')+'<button data-t="today" class="sec">العودة إلى الحضور</button><button data-t="schedule" class="sec">مراجعة جدول الدوام</button></div>';return h;
+}
+
 function vWeekends(){
-  var h = '<h1>سجل أيام الجمعة والسبت المستحقة للبدل</h1><div class="sub">Monzer App - تتبع كافة أيام الراحات الأسبوعية المكتسبة</div>';
+  var h = '<h1>سجل أيام الجمعة والسبت المستحقة للبدل</h1><div class="sub">دوامي — تتبع أيام الراحات الأسبوعية المكتسبة</div>';
   var ws = S.work.filter(function(w){ return w.kind === 'weekend'; }).sort(function(a,b){ return b.date.localeCompare(a.date); });
 
   var grouped = {};
@@ -333,22 +562,18 @@ function vWork(){
   var wp = ws.reduce(function(a,w){ return a + (w.customPay > 0 ? w.customPay : dl); }, 0);
   var hp = hs.reduce(function(a,w){ return a + (w.customPay > 0 ? w.customPay : (dl * 2)); }, 0);
 
-  var h = '<h1>ساعات السهر والأعياد والراحات</h1><div class="sub">Monzer App - احتساب دقيق للساعات الإضافية لشهر '+ym+'</div>';
+  var h = '<h1>ساعات السهر والأعياد والراحات</h1><div class="sub">دوامي — متابعة ساعات للساعات الإضافية لشهر '+ym+'</div>';
 
-  h += '<div class="card"><h2>⚙️ تخصيص أجر السهر الإضافي (بالساعة أو بقيمة يومية ثابتة)</h2>';
-  h += '<div class="row">';
-  h += '<div><label>سعر الساعة الإضافية (جنيه)</label><input type="number" id="cust_hr" value="'+(S.customHourlyRate||'')+'" placeholder="حساب تلقائي"></div>';
-  h += '<div><label>أو قيمة السهر الثابتة لكل يوم (جنيه)</label><input type="number" id="fix_ot" value="'+(S.fixedOtPay||'')+'" placeholder="مثال: 250 جنيه"></div>';
-  h += '</div>';
-  h += '<button data-a="save_cust_hr">حفظ إعدادات أجر السهر</button>';
-  h += '<div class="sub" style="margin-top:6px">'+(S.fixedOtPay > 0 ? 'القيمة الثابتة المعتمدة ليوم السهر: <b style="color:var(--ok)">'+money(S.fixedOtPay)+'</b> (تطبق تلقائياً على كل يوم سهر دون حاجة لإعادة إدخالها)' : 'السعر المعتمد للساعة: <b>'+money(hourlyRate())+'</b>')+'</div></div>';
+  h += '<div class="card"><h2>⚙️ تخصيص سعر الساعة الإضافية يدوياً</h2>';
+  h += '<div class="row"><div><label>سعر الساعة الإضافية المحدد يدوياً (جنيه)</label><input type="number" id="cust_hr" value="'+(S.customHourlyRate||'')+'" placeholder="اتركه فارغاً للحساب التلقائي"></div>';
+  h += '<div><button data-a="save_cust_hr" style="margin-top:24px">حفظ سعر الساعة</button></div></div>';
+  h += '<div class="sub" style="margin-top:4px">السعر الحالي المعتمد للساعة: <b>'+money(hourlyRate())+'</b></div></div>';
 
   h += '<div class="card"><h2>🌙 أولاً: تسجيل ساعات السهر والعمل الإضافي</h2>';
-  h += '<div class="sub">يتم احتساب القيمة تلقائياً حسب القيمة الثابتة المحفوظة أو بسعر الساعة، مع إمكانية تعديل يوم محدد إن أردت.</div>';
   h += '<label>تاريخ يوم السهر</label><input type="date" id="od" value="'+d+'">';
   h += '<div class="row"><div><label>من الساعة</label><input type="time" id="of" value="16:00"></div><div><label>إلى الساعة</label><input type="time" id="ot" value="19:00"></div></div>';
-  h += '<label>تغيير قيمة هذا اليوم فقط (اختياري - اتركها فارغة لاستخدام القيمة الثابتة: '+(S.fixedOtPay > 0 ? money(S.fixedOtPay) : money(hourlyRate() * 3))+')</label><input type="number" id="op_manual" placeholder="اتركها فارغة لتطبيق السعر الثابت">';
-  h += '<button data-a="ot">تسجيل يوم السهر بضغطة واحدة</button>';
+  h += '<label>أو أدخل مبلغ/سعر السهر لهذا اليوم يدوياً بالكامل</label><input type="number" id="op_manual" placeholder="مثال: 250 جنيه">';
+  h += '<button data-a="ot">حفظ ساعات السهر</button>';
   h += '<div class="kv" style="margin-top:12px"><span>إجمالي إضافي الشهر</span><b>'+os.length+' أيام ('+oh+' ساعة) = '+money(op)+'</b></div>';
   
   if(os.length){
@@ -407,7 +632,7 @@ function vShift(){
   
   var ramadanOtTotal = ramadanOts.reduce(function(a,r){ return a + (r.otRate || S.ramadanOtRate || 0); }, 0);
 
-  var h = '<h1>نظام الورديات وعمل شهر رمضان (بدون أجر إضافي للدوام، وسهر مستقل)</h1><div class="sub">Monzer App - دوام رمضان يوم عمل عادي، والمقابل المادي للسهر فقط</div>';
+  var h = '<h1>نظام الورديات وعمل شهر رمضان (بدون أجر إضافي للدوام، وسهر مستقل)</h1><div class="sub">دوامي — دوام رمضان يوم عمل عادي، والمقابل المادي للسهر فقط</div>';
 
   h += '<div class="card"><h2>⚙️ أجور الورديات وسهر رمضان الافتراضية</h2>';
   h += '<div class="row">';
@@ -492,8 +717,11 @@ function vRep(){
   var y = +ym.slice(0,4), q = Math.floor((+ym.slice(5,7)-1)/3);
   
   var attDays = Object.keys(S.att).filter(function(k){ return k.slice(0,7) === ym; });
-  var lates = attDays.filter(function(k){ return S.att[k].in && mins(S.att[k].in) > mins(IN_MAX); }).length;
-  var earlies = attDays.filter(function(k){ return S.att[k].out && mins(S.att[k].out) < mins(OUT_MIN); }).length;
+  var completedAttDays=attDays.filter(function(k){return S.att[k].in&&S.att[k].out;});
+  var netMonthMinutes=completedAttDays.reduce(function(a,k){return a+(netWorkMinutes(k)||0);},0);
+  var breakMonthMinutes=completedAttDays.reduce(function(a,k){return a+totalBreakMinutes(k,false);},0);
+  var lates = attDays.filter(function(k){var sh=scheduleForDate(k);return S.att[k].in&&mins(S.att[k].in)>mins(sh?sh.start:workRules().inMax);}).length;
+  var earlies = attDays.filter(function(k){var sh=scheduleForDate(k);return S.att[k].out&&(sh?shiftRelativeMinute(S.att[k].out,sh)<shiftRelativeMinute(sh.end,sh):mins(S.att[k].out)<mins(workRules().outMin));}).length;
 
   var os = S.ot.filter(function(o){ return o.date.slice(0,7) === ym; });
   var otHrs = os.reduce(function(a,o){ return a + otHours(o); }, 0);
@@ -502,8 +730,8 @@ function vRep(){
   var holDays = S.work.filter(function(w){ return w.date.slice(0,7) === ym && w.kind === 'holiday'; }).length;
   var wkDays = S.work.filter(function(w){ return w.date.slice(0,7) === ym && w.kind === 'weekend'; }).length;
 
-  var holPay = holDays * 2 * dailyRate();
-  var wkPay = wkDays * 1 * dailyRate();
+  var holPay = S.work.filter(function(w){return w.date.slice(0,7)===ym&&w.kind==='holiday';}).reduce(function(a,w){return a+(w.customPay>0?w.customPay:2*dailyRate());},0);
+  var wkPay = S.work.filter(function(w){return w.date.slice(0,7)===ym&&w.kind==='weekend';}).reduce(function(a,w){return a+(w.customPay>0?w.customPay:dailyRate());},0);
 
   var midShifts = S.shifts.filter(function(s){ return s.date.slice(0,7) === ym && s.type === 'mid'; });
   var nightShifts = S.shifts.filter(function(s){ return s.date.slice(0,7) === ym && s.type === 'night'; });
@@ -568,7 +796,7 @@ function vRep(){
 
   var qT = qTotal(y, q);
 
-  var h = '<h1>التقرير المالي - Monzer App</h1><div class="sub">كشف كامل بالمستحقات والبدلات والأرباح والضرائب</div>'+banner();
+  var h = '<h1>دوامي — التقرير المالي</h1><div class="sub">تقديرات للمستحقات والبدلات والضريبة؛ راجع جهة الرواتب قبل الاعتماد</div>'+banner();
 
   h += '<div class="card"><h2>💵 1. إدخال المرتبات والأجر الأساسي</h2>';
   h += '<div class="row"><div><label>المرتب الشامل (جنيه)</label><input type="number" id="sal" value="'+(S.salary||'')+'" placeholder="مثال: 10000"></div>';
@@ -587,7 +815,7 @@ function vRep(){
   h += '<div class="card" style="border: 2px solid var(--pr); border-radius: 16px; padding: 16px;">';
   h += '<h2>⚖️ 3. اختيار الشريحة الضريبية والحساب الفوري للخصم</h2>';
   h += '<div class="row" style="margin-bottom: 12px;"><div><label>الشريحة الضريبية المعتمدة</label><select id="tax_bracket_sel">';
-  h += '<option value="auto" '+(S.taxBracketChoice==='auto'?'selected':'')+'>تلقائي (حسب شرائح قانون الضرائب رقم 7)</option>';
+  h += '<option value="auto" '+(S.taxBracketChoice==='auto'?'selected':'')+'>تلقائي (تقدير مبسط داخل التطبيق)</option>';
   h += '<option value="0" '+(S.taxBracketChoice==='0'?'selected':'')+'>شريحة 0% (معفى حتى 40 ألف سنوياً)</option>';
   h += '<option value="10" '+(S.taxBracketChoice==='10'?'selected':'')+'>شريحة 10% (من 40 ألف إلى 55 ألف)</option>';
   h += '<option value="15" '+(S.taxBracketChoice==='15'?'selected':'')+'>شريحة 15% (من 55 ألف إلى 70 ألف)</option>';
@@ -597,6 +825,7 @@ function vRep(){
   h += '<option value="27.5" '+(S.taxBracketChoice==='27.5'?'selected':'')+'>شريحة 27.5% (أكثر من 1.2 مليون)</option>';
   h += '</select></div><div><button data-a="save_tax_bracket" style="margin-top:24px">اعتماد الشريحة</button></div></div>';
 
+  h += '<div class="warn" style="font-size:13px;font-weight:500">حساب الضريبة هنا تقديري ومبسّط، ولا يراعي كل الإعفاءات أو القواعد المحلية أو تغيّر التشريعات. لا تستخدمه ككشف راتب رسمي؛ راجع مسؤول الرواتب أو مختصاً ضريبياً.</div>';
   h += '<div class="kv" style="background:var(--infob); padding:10px; border-radius:10px; margin-bottom:10px;">';
   h += '<span>الشريحة المطبقة حالياً على الخصم</span><b class="big" style="font-size:16px; color:var(--info);">' + (isAutoBracket ? 'احتساب تصاعدي تلقائي' : (S.taxBracketChoice + '% خصم مباشر')) + '</b></div>';
 
@@ -623,8 +852,10 @@ function vRep(){
   
   h += '<h2 style="margin-top:16px">📌 ملخص الحضور والانصراف</h2>';
   h += '<div class="kv"><span>أيام الحضور الفعلية (بما فيها دوام رمضان)</span><b>'+(attDays.length + ramadanAtts.length)+' يوم</b></div>';
-  h += '<div class="kv"><span>عدد مرات التأخير (بعد 7:50 ص)</span><b style="'+(lates>0?'color:var(--wr)':'')+'">'+lates+' مرة</b></div>';
-  h += '<div class="kv"><span>الانصراف المبكر (قبل 3:50 م أو 2 م لرمضان)</span><b>'+earlies+' مرة</b></div>';
+  h += '<div class="kv"><span>صافي ساعات العمل المكتملة بعد الاستراحات</span><b>'+fmtMinutes(netMonthMinutes)+'</b></div>';
+  h += '<div class="kv"><span>إجمالي الاستراحات المسجلة في الأيام المكتملة</span><b>'+fmtMinutes(breakMonthMinutes)+'</b></div>';
+  h += '<div class="kv"><span>مرات الحضور المتأخر مقارنة بجدول الوردية أو الحد العام</span><b style="'+(lates>0?'color:var(--wr)':'')+'">'+lates+' مرة</b></div>';
+  h += '<div class="kv"><span>مرات الانصراف المبكر مقارنة بجدول الوردية أو الحد العام</span><b>'+earlies+' مرة</b></div>';
 
   h += '<h2 style="margin-top:16px">🏖️ إحصائيات الإجازات</h2>';
   ['annual','casual','sick'].forEach(function(k){
@@ -649,25 +880,30 @@ function vRep(){
 }
 
 function vSettings(){
-  var h = '<h1>Monzer App - الإعدادات والمزامنة</h1><div class="sub">الحفاظ على بياناتك وإعداد التنبيهات والأرصدة</div>';
+  var h = '<h1>دوامي — الإعدادات والبيانات</h1><div class="sub">بياناتك محفوظة على هذا الجهاز فقط ما لم تصدّر نسخة احتياطية</div>';
 
-  h += '<div class="card"><h2>📧 المزامنة عبر إيميل المستخدم</h2>';
-  h += '<label>البريد الإلكتروني الخاص بك</label><input type="email" id="uemail" value="'+(S.email||'')+'" placeholder="user@gmail.com">';
-  h += '<button data-a="save_email">حفظ بريد المزامنة</button></div>';
+  h += '<div class="card"><h2>👤 بيانات الحساب المحلية</h2>';
+  h += '<label>بريد للتعريف داخل النسخة الاحتياطية (لا تتم مزامنته)</label><input type="email" id="uemail" value="'+esc(S.email||'')+'" placeholder="user@gmail.com">';
+  h += '<button data-a="save_email">حفظ البريد محلياً</button></div>';
+
+  h += '<div class="card"><h2>🛡️ حماية بيانات التطبيق</h2>';
+  h += '<div class="sub">يطلب الزر من المتصفح منع الإخلاء التلقائي لبيانات هذا الموقع عند ضغط التخزين. قد يرفض المتصفح الطلب، ولا يمنع هذا مسح بيانات الموقع يدوياً أو حذف التطبيق. صدّر نسخة JSON دورياً.</div>';
+  h += '<button data-a="req_persist" class="sec">طلب حماية التخزين من المتصفح</button>';
+  h += '<div class="sub">لإعادة التشغيل دون إنترنت: افتح التطبيق أولاً عبر HTTPS واترك ظهور رسالة «جاهز للعمل دون اتصال»، ثم ثبّته/أضفه للشاشة الرئيسية. يعمل هذا على بيانات المتصفح والأصل نفسيهما.</div></div>';
+
+  h += '<div class="card"><h2>🕒 قواعد الدوام وأيام الراحة</h2>';
+  h += '<div class="row"><div><label>آخر وقت للحضور في الموعد</label><input type="time" id="rule_in" value="'+workRules().inMax+'"></div><div><label>أبكر وقت انصراف طبيعي</label><input type="time" id="rule_out" value="'+workRules().outMin+'"></div></div>';
+  h += '<label>أيام الراحة الأسبوعية المستخدمة عند حساب الإجازة</label><select id="weekend_mode"><option value="fri_sat" '+(workRules().weekendMode==='fri_sat'?'selected':'')+'>الجمعة والسبت</option><option value="sat_sun" '+(workRules().weekendMode==='sat_sun'?'selected':'')+'>السبت والأحد</option><option value="fri" '+(workRules().weekendMode==='fri'?'selected':'')+'>الجمعة فقط</option><option value="sat" '+(workRules().weekendMode==='sat'?'selected':'')+'>السبت فقط</option><option value="none" '+(workRules().weekendMode==='none'?'selected':'')+'>لا توجد أيام مستثناة</option></select>';
+  h += '<button data-a="save_work_rules" class="sec">حفظ قواعد الدوام</button></div>';
 
   h += '<div class="card"><h2>⚙️ تعديل أرصدة الإجازات السنوية المستحقة</h2>';
   h += '<div class="row"><div><label>السنوية</label><input type="number" id="qa" value="'+Q('annual')+'"></div><div><label>العارضة</label><input type="number" id="qc" value="'+Q('casual')+'"></div><div><label>المرضية</label><input type="number" id="qs" value="'+Q('sick')+'"></div></div>';
   h += '<button data-a="quota" class="sec">حفظ الأرصدة الجديدة</button></div>';
 
-  h += '<div class="card"><h2>🔔 التذكيرات والتنبيهات المباشرة</h2>';
-  h += '<button data-a="req_notify">تفعيل الإشعارات اليومية</button>';
+  h += '<div class="card"><h2>🔔 إذن إشعارات المتصفح</h2>';
+  h += '<div class="sub">يمنح الإذن فقط؛ لا تُجدول هذه النسخة المحلية إشعارات أثناء إغلاق الصفحة.</div>';
+  h += '<button data-a="req_notify">طلب إذن الإشعارات</button>';
   h += '<button data-a="download_ics" class="sec" style="margin-top:8px">📅 إضافة المواعيد لتقويم Google / Apple Calendar</button></div>';
-
-  h += '<div class="card" style="border: 2px solid var(--pr);"><h2>🛡️ ميزة التنزيل التلقائي للنسخة الاحتياطية (حماية قصوى)</h2>';
-  h += '<div class="sub">حفظ نسخة احتياطية مباشرة على ذاكرة الهاتف (مجلد التنزيلات Downloads) لتفادي مسح بيانات المتصفح نهائياً.</div>';
-  h += '<button data-a="auto_backup_download" style="background:var(--ok); color:#fff; font-weight:700;">📥 تنزيل نسخة احتياطية أوتوماتيكية لهاتفك الآن</button>';
-  h += '<div class="sub" style="margin-top:6px; color:var(--ok);">✓ تحميك حتى لو تم مسح بيانات متصفح كروم بالكامل.</div>';
-  h += '</div>';
 
   h += '<div class="card"><h2>💾 النسخ الاحتياطي وتصدير البيانات</h2>';
   h += '<div class="row">';
@@ -682,20 +918,52 @@ function vSettings(){
   return h;
 }
 
-var ICON_SVG = '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect width="512" height="512" rx="120" fill="url(%23mg)"/><circle cx="256" cy="262" r="140" fill="none" stroke="#fff" stroke-width="30"/><path d="M256 176v90l62 40" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><circle cx="380" cy="132" r="42" fill="#fbbf24" stroke="#0f766e" stroke-width="14"/></svg>';
+var ICON_SVG = "<svg viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\">\n  <defs>\n    <linearGradient id=\"bg\" x1=\"58\" y1=\"28\" x2=\"454\" y2=\"480\" gradientUnits=\"userSpaceOnUse\">\n      <stop stop-color=\"#0f766e\"/><stop offset=\"1\" stop-color=\"#164e63\"/>\n    </linearGradient>\n    <linearGradient id=\"paper\" x1=\"144\" y1=\"96\" x2=\"364\" y2=\"416\" gradientUnits=\"userSpaceOnUse\">\n      <stop stop-color=\"#ffffff\"/><stop offset=\"1\" stop-color=\"#e6fffb\"/>\n    </linearGradient>\n    <filter id=\"shadow\" x=\"66\" y=\"70\" width=\"380\" height=\"386\" color-interpolation-filters=\"sRGB\" filterUnits=\"userSpaceOnUse\">\n      <feGaussianBlur stdDeviation=\"14\"/>\n    </filter>\n  </defs>\n  <rect width=\"512\" height=\"512\" rx=\"118\" fill=\"url(#bg)\"/>\n  <circle cx=\"410\" cy=\"108\" r=\"72\" fill=\"#ffffff\" opacity=\".06\"/>\n  <circle cx=\"91\" cy=\"414\" r=\"94\" fill=\"#ffffff\" opacity=\".05\"/>\n  <rect x=\"114\" y=\"110\" width=\"284\" height=\"300\" rx=\"42\" fill=\"#052f32\" opacity=\".28\" filter=\"url(#shadow)\"/>\n  <rect x=\"112\" y=\"96\" width=\"288\" height=\"320\" rx=\"42\" fill=\"url(#paper)\"/>\n  <path d=\"M112 138a42 42 0 0 1 42-42h204a42 42 0 0 1 42 42v54H112z\" fill=\"#14b8a6\"/>\n  <rect x=\"174\" y=\"78\" width=\"24\" height=\"68\" rx=\"12\" fill=\"#f0fdfa\"/>\n  <rect x=\"314\" y=\"78\" width=\"24\" height=\"68\" rx=\"12\" fill=\"#f0fdfa\"/>\n  <path d=\"M162 226h34m35 0h34m35 0h16M162 263h30m39 0h28m42 0h20\" stroke=\"#99b9b8\" stroke-width=\"15\" stroke-linecap=\"round\"/>\n  <circle cx=\"256\" cy=\"330\" r=\"68\" fill=\"#0f766e\"/>\n  <path d=\"m222 329 24 25 48-53\" fill=\"none\" stroke=\"#fff\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg>";
+
+var OFFLINE_CACHE_NAME = 'duwami-pwa-v19-1';
+
+function verifyOfflineShell(){
+  var secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(!('serviceWorker' in navigator)||!secure||!('caches' in window)){window.__duwamiOfflineReady=false;updateOfflineStatus();return Promise.resolve(false);}
+  return navigator.serviceWorker.ready.then(function(reg){
+    return caches.open(OFFLINE_CACHE_NAME).then(function(cache){
+      var required=['./','./index.html','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
+      return Promise.all(required.map(function(path){return cache.match(new URL(path,reg.scope).href);})).then(function(responses){return responses.every(function(response){return !!response;});});
+    });
+  }).then(function(ready){window.__duwamiOfflineReady=ready;updateOfflineStatus();return ready;}).catch(function(){window.__duwamiOfflineReady=false;updateOfflineStatus();return false;});
+}
+
+function updateOfflineStatus(){
+  var el=document.getElementById('offline-status');
+  if(!el)return;
+  var secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(!('serviceWorker' in navigator)||!secure){el.textContent='لتفعيل العمل دون اتصال، افتح التطبيق عبر HTTPS';return;}
+  if(!navigator.onLine){el.textContent=window.__duwamiOfflineReady?'📴 دون اتصال — ملفات التطبيق محفوظة':'📴 غير جاهز بعد — افتح التطبيق بالإنترنت حتى يكتمل التخزين';return;}
+  el.textContent=window.__duwamiOfflineReady?'✅ تم التحقق من ملفات التشغيل دون اتصال':'يجري إعداد التطبيق؛ انتظر تأكيد الجاهزية قبل قطع الإنترنت';
+}
+window.addEventListener('online',function(){updateOfflineStatus();registerOfflineSupport();});
+window.addEventListener('offline',updateOfflineStatus);
+
+function registerOfflineSupport(){
+  var secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(!('serviceWorker' in navigator)||!secure){window.__duwamiOfflineReady=false;updateOfflineStatus();return;}
+  navigator.serviceWorker.register('./sw.js').then(function(){return verifyOfflineShell();}).catch(function(){verifyOfflineShell();});
+}
 
 function render(){
   var theme = S.theme === 'dark' ? 'dark' : (S.theme === 'light' ? 'light' : '');
   if(theme) document.documentElement.setAttribute('data-theme', theme);
   else document.documentElement.removeAttribute('data-theme');
 
-  var viewFn = { today: vToday, leave: vLeave, work: vWork, weekends: vWeekends, shift: vShift, rep: vRep, settings: vSettings }[tab];
+  var viewFn = { today: vToday, leave: vLeave, work: vWork, weekends: vWeekends, shift: vShift, schedule: vSchedule, exceptions: vExceptions, rep: vRep, settings: vSettings }[tab];
   
-  var brandHeader = '<div class="brand-header"><div class="brand">'+ICON_SVG+'<b>Monzer App (v16.1 Data Safe)</b></div><button class="theme-toggle" id="t-toggle" title="تبديل الوضع">🌙</button></div>';
+  var brandHeader = '<div class="brand-header"><div class="brand">'+ICON_SVG+'<div><b>دوامي</b><small>الإصدار 19.1 · حفظ محلي موثوق</small></div></div><button class="theme-toggle" id="t-toggle" title="تبديل الوضع" aria-label="تبديل الوضع">☾</button></div><div class="offline-status" id="offline-status" role="status" aria-live="polite"></div><div class="storage-status" id="storage-status" role="status" aria-live="polite"></div>';
   
   document.getElementById('app').innerHTML = brandHeader + viewFn();
+  updateOfflineStatus();
+  updateStorageStatus();
   document.getElementById('nav').innerHTML = TABS.map(function(t){
-    return '<a data-t="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'"><span>'+t[1]+'</span>'+t[2]+'</a>';
+    return '<a href="#'+t[0]+'" data-t="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'" aria-current="'+(t[0]===tab?'page':'false')+'"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24">'+ICONS[t[1]]+'</svg></span><span>'+t[2]+'</span></a>';
   }).join('');
 }
 
@@ -703,6 +971,11 @@ document.addEventListener('change', function(e){
   if(e.target.id === 'rm' && e.target.value){
     S._ym = e.target.value;
     render();
+  }
+  if(e.target.id === 'sched_day'){
+    var day=Number(e.target.value), rule=S.schedules.find(function(x){return x.weekday===day;});
+    var si=document.getElementById('sched_start'), so=document.getElementById('sched_end'), sb=document.getElementById('sched_break');
+    if(si)si.value=rule?rule.start:'08:00';if(so)so.value=rule?rule.end:'16:00';if(sb)sb.value=rule?rule.breakMinutes:30;
   }
   if(e.target.id === 'l_dur'){
     var wrap = document.getElementById('le_wrap');
@@ -720,18 +993,52 @@ document.addEventListener('click', function(e){
     save(); render(); return;
   }
 
+  var queryButton=e.target.closest('[data-q]');
+  if(queryButton){var quickInput=document.getElementById('smart_q'),quickAnswer=document.getElementById('smart_answer');if(quickInput)quickInput.value=queryButton.dataset.q;if(quickAnswer)quickAnswer.textContent=answerSmartQuery(queryButton.dataset.q);return;}
+
   var t = e.target.closest('[data-t]');
-  if(t){ tab = t.dataset.t; render(); window.scrollTo(0,0); return; }
+  if(t){ e.preventDefault(); tab = t.dataset.t; render(); window.scrollTo(0,0); return; }
 
   var b = e.target.closest('[data-a]');
   if(!b) return;
 
   var a = b.dataset.a, n = new Date(), d = ds(n), id = Date.now();
+  if(['delatt','dell','delo','delw','del_shift','del_ramadan_att','del_ramadan_ot','del_schedule'].indexOf(a)>=0 && !confirm('هل تريد حذف هذا السجل؟')) return;
 
-  if(a === 'in'){ S.att[d] = S.att[d] || {}; S.att[d].in = ts(n); }
-  else if(a === 'out'){ S.att[d] = S.att[d] || {}; S.att[d].out = ts(n); }
+  if(a === 'smart_ask') { var smartInput=document.getElementById('smart_q'),smartOutput=document.getElementById('smart_answer');if(smartOutput)smartOutput.textContent=answerSmartQuery(smartInput?smartInput.value:'');return; }
+  if(storageLocked && ['rs','req_persist'].indexOf(a)<0){alert(storageProblem);return;}
+
+  if(a === 'start_break'){
+    var breakWorkDate=activeAttendanceDate(d);
+    if(!breakWorkDate){alert('سجّل الحضور أولاً، ولا تبدأ استراحة بعد الانصراف.');return;}
+    if(openBreak(breakWorkDate)){alert('هناك استراحة مفتوحة بالفعل.');return;}
+    S.breaks[breakWorkDate]=S.breaks[breakWorkDate]||[];S.breaks[breakWorkDate].push({start:ts(n),end:''});
+  }
+  else if(a === 'end_break'){
+    var breakDate=findOpenBreakDate(), ob=breakDate&&openBreak(breakDate);if(!ob){alert('لا توجد استراحة جارية لإنهائها.');return;}ob.end=ts(n);
+  }
+  else if(a === 'save_schedule'){
+    var day=Number(V('sched_day')), st=V('sched_start'), en=V('sched_end'), br=Number(V('sched_break'));
+    if(!Number.isInteger(day)||day<0||day>6||!isTimeValue(st)||!isTimeValue(en)||st===en||!Number.isFinite(br)||br<0||br>300){alert('تحقق من اليوم والوقت ومدة الاستراحة (0–300 دقيقة).');return;}
+    if(br>durationMinutes(st,en)){alert('مدة الاستراحة لا يمكن أن تتجاوز مدة الوردية.');return;}
+    var old=S.schedules.find(function(x){return x.weekday===day;});
+    if(old){old.start=st;old.end=en;old.breakMinutes=br;old.enabled=true;}else S.schedules.push({id:id,weekday:day,start:st,end:en,breakMinutes:br,enabled:true});
+    alert('تم حفظ الوردية الأسبوعية.');
+  }
+  else if(a === 'del_schedule'){S.schedules=S.schedules.filter(function(x){return x.id!=b.dataset.i;});}
+  else if(a === 'in'){
+    if(activeAttendanceDate(d)){alert('توجد وردية مفتوحة بالفعل؛ سجّل الانصراف قبل بدء وردية جديدة.');return;}
+    if(S.att[d]&&S.att[d].in){alert('يوجد حضور مسجل لهذا اليوم. استخدم التعديل اليدوي إذا أردت تصحيحه.');return;}
+    S.att[d] = S.att[d] || {}; S.att[d].in = ts(n);
+  }
+  else if(a === 'out'){
+    var outDate=activeAttendanceDate(d);
+    if(!outDate){alert('لا يوجد حضور مفتوح لتسجيل الانصراف.');return;}
+    if(openBreak(outDate)){alert('أنه الاستراحة الجارية أولاً ثم سجّل الانصراف.');return;}
+    S.att[outDate].out = ts(n);
+  }
   else if(a === 'man'){
-    var md = V('md'); if(md) S.att[md] = { in: V('mi')||undefined, out: V('mo')||undefined };
+    var md = V('md'); if(validDateInput(md)){ S.att[md] = { in: isTimeValue(V('mi'))?V('mi'):'', out: isTimeValue(V('mo'))?V('mo'):'' }; } else { alert('اختر تاريخاً صحيحاً'); return; }
   }
   else if(a === 'delatt'){ delete S.att[b.dataset.k]; }
   else if(a === 'leave'){
@@ -740,7 +1047,8 @@ document.addEventListener('click', function(e){
     var dur = parseFloat(V('l_dur')) || 1;
     
     if(dur === 0.5){
-      if(!ld){ if(lm) lm.textContent = 'يرجى اختيار التاريخ'; return; }
+      if(!validDateInput(ld)){ if(lm) lm.textContent = 'يرجى اختيار تاريخ صحيح'; return; }
+      if(S.leaves.some(function(x){return x.date===ld;})){ if(lm) lm.textContent='توجد إجازة مسجلة مسبقاً في هذا اليوم'; return; }
       if(lType === 'replacement' && replacementBalance() < 0.5){
         if(lm) lm.textContent = 'رصيد إجازات البدل لديك لا يكفي (المتاح: ' + replacementBalance() + ' يوم)'; return;
       }
@@ -748,8 +1056,12 @@ document.addEventListener('click', function(e){
     } else {
       var le = V('le') || ld;
       if(!ld || le < ld){ if(lm) lm.textContent = 'تأكد أن تاريخ النهاية يطابق أو يلي تاريخ البداية'; return; }
+      if(!validDateInput(ld) || !validDateInput(le)){ if(lm) lm.textContent = 'صيغة التاريخ غير صحيحة'; return; }
+      var span=(Date.parse(le+'T00:00:00Z')-Date.parse(ld+'T00:00:00Z'))/86400000;
+      if(span>364){ if(lm) lm.textContent = 'الفترة طويلة جداً؛ سجّل الإجازة على فترات لا تتجاوز 365 يوماً'; return; }
       var dd = leaveDays(ld, le, document.getElementById('lw').checked);
       if(!dd.length){ if(lm) lm.textContent = 'الفترة تقع بالكامل في العطلة الأسبوعية'; return; }
+      if(S.leaves.some(function(x){return dd.indexOf(x.date)>=0;})){ if(lm) lm.textContent='توجد إجازة مسجلة مسبقاً في يوم أو أكثر من الفترة المختارة'; return; }
       if(lType === 'replacement' && replacementBalance() < dd.length){
         if(lm) lm.textContent = 'رصيد إجازات البدل لا يكفي'; return;
       }
@@ -765,14 +1077,17 @@ document.addEventListener('click', function(e){
   }
   else if(a === 'edit_leave_date'){
     var lid = b.dataset.i;
-    var item = S.leaves.find(function(l){ return (l.gid || l.id) == lid; });
-    if(item){
-      var nDate = prompt('أدخل التاريخ الجديد للإجازة (YYYY-MM-DD):', item.date);
-      if(nDate && /^\d{4}-\d{2}-\d{2}$/.test(nDate)){
-        S.leaves.forEach(function(l){
-          if((l.gid || l.id) == lid) l.date = nDate;
-        });
-        alert('تم تعديل تاريخ الإجازة بنجاح ✅');
+    var group = S.leaves.filter(function(l){ return (l.gid || l.id) == lid; });
+    if(group.length){
+      var firstDate=group.map(function(l){return l.date;}).sort()[0];
+      var nDate = prompt('أدخل تاريخ بداية الإجازة الجديد (YYYY-MM-DD):', firstDate);
+      if(nDate){
+        if(!isDateValue(nDate)){ alert('التاريخ غير صحيح'); return; }
+        var base=Date.parse(firstDate+'T00:00:00Z'), target=Date.parse(nDate+'T00:00:00Z');
+        var proposed=group.map(function(l){return new Date(target+(Date.parse(l.date+'T00:00:00Z')-base)).toISOString().slice(0,10);});
+        if(S.leaves.some(function(l){return group.indexOf(l)<0&&proposed.indexOf(l.date)>=0;})){ alert('يتعارض التاريخ الجديد مع إجازة أخرى مسجلة'); return; }
+        group.forEach(function(l,i){l.date=proposed[i];});
+        alert('تم نقل فترة الإجازة مع الحفاظ على مدتها ✅');
       }
     }
   }
@@ -788,58 +1103,76 @@ document.addEventListener('click', function(e){
     S.leaves = S.leaves.filter(function(x){ return (x.gid||x.id) != b.dataset.i; });
   }
   else if(a === 'save_cust_hr'){
-    S.customHourlyRate = parseFloat(V('cust_hr')) || 0;
-    S.fixedOtPay = parseFloat(V('fix_ot')) || 0;
-    alert('تم حفظ إعدادات أجر وقيمة السهر الثابتة بنجاح ✅');
+    S.customHourlyRate = Math.max(0,parseFloat(V('cust_hr')) || 0);
+    alert('تم حفظ سعر الساعة الإضافية المحدد يدوياً ✅');
   }
   else if(a === 'ot'){
     var od = V('od');
     var custP = parseFloat(V('op_manual')) || 0;
-    if(od && (custP > 0 || (V('of') && V('ot')))){
+    if(validDateInput(od) && (custP > 0 || (isTimeValue(V('of')) && isTimeValue(V('ot'))))){
+      if(!uniqueDate(S.ot,od)){ alert('يوجد سجل إضافي بهذا التاريخ بالفعل؛ احذف السجل القديم أو عدّله من القائمة'); return; }
+      if(custP<=0 && otHours({from:V('of'),to:V('ot')})===0){ alert('مدة السهر يجب أن تكون أكبر من صفر'); return; }
       S.ot.push({ id: id, date: od, from: V('of')||'16:00', to: V('ot')||'19:00', customPay: custP });
-    }
+    } else { alert('أدخل تاريخاً صحيحاً ووقتاً صالحاً أو مبلغاً يدوياً'); return; }
   }
   else if(a === 'delo'){ S.ot = S.ot.filter(function(x){ return x.id != b.dataset.i; }); }
   else if(a === 'wkw'){
     var wd2 = V('wd2');
     var manualP = parseFloat(V('wp_manual')) || 0;
-    if(wd2) S.work.push({ id: id, date: wd2, kind: 'weekend', customPay: manualP });
+    if(!validDateInput(wd2)){ alert('اختر تاريخاً صحيحاً'); return; }
+    if(!uniqueDate(S.work,wd2)){ alert('تم تسجيل عمل في هذا التاريخ مسبقاً؛ لا يمكن تكرار اليوم كراحة وعطلة معاً'); return; }
+    S.work.push({ id: id, date: wd2, kind: 'weekend', customPay: manualP });
   }
   else if(a === 'wkh'){
     var wd3 = V('wd3');
     var manualP = parseFloat(V('hp_manual')) || 0;
-    if(wd3) S.work.push({ id: id, date: wd3, kind: 'holiday', customPay: manualP });
+    if(!validDateInput(wd3)){ alert('اختر تاريخاً صحيحاً'); return; }
+    if(!uniqueDate(S.work,wd3)){ alert('تم تسجيل عمل في هذا التاريخ مسبقاً؛ لا يمكن تكرار اليوم كراحة وعطلة معاً'); return; }
+    S.work.push({ id: id, date: wd3, kind: 'holiday', customPay: manualP });
   }
   else if(a === 'delw'){ S.work = S.work.filter(function(x){ return x.id != b.dataset.i; }); }
+  else if(a === 'save_work_rules'){
+    if(!isTimeValue(V('rule_in'))||!isTimeValue(V('rule_out'))){ alert('أدخل أوقاتاً صحيحة'); return; }
+    S.workRules={inMax:V('rule_in'),outMin:V('rule_out'),weekendMode:['fri_sat','sat_sun','fri','sat','none'].indexOf(V('weekend_mode'))>=0?V('weekend_mode'):'fri_sat'};
+    alert('تم حفظ قواعد الدوام وأيام الراحة');
+  }
   else if(a === 'save_shift_rates'){
     S.shiftRates = {
-      mid: parseFloat(V('sr_mid')) || 0,
-      night: parseFloat(V('sr_night')) || 0
+      mid: Math.max(0,parseFloat(V('sr_mid')) || 0),
+      night: Math.max(0,parseFloat(V('sr_night')) || 0)
     };
-    S.ramadanOtRate = parseFloat(V('sr_rot')) || 0;
+    S.ramadanOtRate = Math.max(0,parseFloat(V('sr_rot')) || 0);
     alert('تم حفظ الأجور الافتراضية للورديات وسهر رمضان بنجاح ✅');
   }
   else if(a === 'add_shift_mid'){
     var sd = V('sd_mid');
-    if(sd) S.shifts.push({ id: id, date: sd, type: 'mid', in: V('si_mid')||'15:30', out: V('so_mid')||'23:30', rate: parseFloat(V('sp_mid'))||S.shiftRates.mid||0 });
+    if(!validDateInput(sd)||!isTimeValue(V('si_mid'))||!isTimeValue(V('so_mid'))){ alert('تحقق من التاريخ وأوقات الوردية'); return; }
+    if(S.shifts.some(function(x){return x.date===sd&&x.type==='mid';})){ alert('وردية الوسط مسجلة لهذا التاريخ بالفعل'); return; }
+    S.shifts.push({ id: id, date: sd, type: 'mid', in: V('si_mid'), out: V('so_mid'), rate: parseFloat(V('sp_mid'))||S.shiftRates.mid||0 });
   }
   else if(a === 'add_shift_night'){
     var sd = V('sd_night');
-    if(sd) S.shifts.push({ id: id, date: sd, type: 'night', in: V('si_night')||'23:30', out: V('so_night')||'07:30', rate: parseFloat(V('sp_night'))||S.shiftRates.night||0 });
+    if(!validDateInput(sd)||!isTimeValue(V('si_night'))||!isTimeValue(V('so_night'))){ alert('تحقق من التاريخ وأوقات الوردية'); return; }
+    if(S.shifts.some(function(x){return x.date===sd&&x.type==='night';})){ alert('الوردية الليلية مسجلة لهذا التاريخ بالفعل'); return; }
+    S.shifts.push({ id: id, date: sd, type: 'night', in: V('si_night'), out: V('so_night'), rate: parseFloat(V('sp_night'))||S.shiftRates.night||0 });
   }
   else if(a === 'del_shift'){
     S.shifts = S.shifts.filter(function(s){ return s.id != b.dataset.i; });
   }
   else if(a === 'add_ramadan_att'){
     var rd = V('rad_d');
-    if(rd) S.ramadanAtt.push({ id: id, date: rd, in: V('rad_i')||'07:30', out: V('rad_o')||'14:00' });
+    if(!validDateInput(rd)||!isTimeValue(V('rad_i'))||!isTimeValue(V('rad_o'))){ alert('تحقق من التاريخ وأوقات الدوام'); return; }
+    if(S.ramadanAtt.some(function(x){return x.date===rd;})){ alert('دوام رمضان مسجل لهذا التاريخ بالفعل'); return; }
+    S.ramadanAtt.push({ id: id, date: rd, in: V('rad_i'), out: V('rad_o') });
   }
   else if(a === 'del_ramadan_att'){
     S.ramadanAtt = S.ramadanAtt.filter(function(r){ return r.id != b.dataset.i; });
   }
   else if(a === 'add_ramadan_ot'){
     var rd = V('rot_d');
-    if(rd) S.ramadanOt.push({ id: id, date: rd, from: V('rot_f')||'14:00', to: V('rot_t')||'19:00', otRate: parseFloat(V('rot_p'))||S.ramadanOtRate||0 });
+    if(!validDateInput(rd)||!isTimeValue(V('rot_f'))||!isTimeValue(V('rot_t'))){ alert('تحقق من التاريخ وأوقات السهر'); return; }
+    if(S.ramadanOt.some(function(x){return x.date===rd;})){ alert('سهر رمضان مسجل لهذا التاريخ بالفعل'); return; }
+    S.ramadanOt.push({ id: id, date: rd, from: V('rot_f'), to: V('rot_t'), otRate: parseFloat(V('rot_p'))||S.ramadanOtRate||0 });
   }
   else if(a === 'del_ramadan_ot'){
     S.ramadanOt = S.ramadanOt.filter(function(r){ return r.id != b.dataset.i; });
@@ -849,34 +1182,41 @@ document.addEventListener('click', function(e){
     alert('تم حفظ اختيار الشريحة الضريبية بنجاح ✅');
   }
   else if(a === 'sal'){
-    S.salary = parseFloat(V('sal')) || 0;
-    S.basicSalary = parseFloat(V('bsal')) || 0;
+    S.salary = Math.max(0,parseFloat(V('sal')) || 0);
+    S.basicSalary = Math.max(0,parseFloat(V('bsal')) || 0);
     alert('تم حفظ بيانات المرتب بنجاح ✅');
   }
   else if(a === 'save_profit'){
-    S.profitMonths = parseFloat(V('pmonths')) || 0;
+    S.profitMonths = Math.max(0,parseFloat(V('pmonths')) || 0);
     alert('تم حفظ نسبة الأشهر وحساب الأرباح بنجاح ✅');
   }
   else if(a === 'save_email'){
-    S.email = V('uemail');
-    alert('تم حفظ البريد الإلكتروني للمزامنة ✅');
+    var em=V('uemail');
+    S.email=(em.length<=254 && /^[^\s<>"']+@[^\s<>"']+\.[^\s<>"']+$/.test(em))?em:'';
+    if(em && !S.email){alert('صيغة البريد الإلكتروني غير صحيحة');return;}
+    alert('تم حفظ البريد محلياً ✅');
+  }
+  else if(a === 'req_persist'){
+    requestPersistentStorage();
+    return;
   }
   else if(a === 'req_notify'){
     if ('Notification' in window) {
       Notification.requestPermission().then(function(p){
-        if(p === 'granted') alert('تم تفعيل إشعارات التنبيه 🔔');
+        if(p === 'granted') alert('تم منح إذن الإشعارات لهذا المتصفح؛ لا تُرسل النسخة المحلية تنبيهات مجدولة أثناء إغلاق الصفحة.');
         else alert('لم يتم منح الإذن للإشعارات');
       });
     } else alert('المتصفح لا يدعم التنبيهات المباشرة');
   }
   else if(a === 'download_ics'){
-    var icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Monzer App//NONSGML//EN\n" +
-      "BEGIN:VEVENT\nSUMMARY:تذكير حضور العمل (Monzer App)\nRRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH\nDTSTART:20260101T075000\nDURATION:PT10M\nEND:VEVENT\n" +
-      "END:VCALENDAR";
+    var startDate = nextWorkday().replace(/-/g,'');
+    var icsData = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Dawami//NONSGML//AR\r\n" +
+      "BEGIN:VEVENT\r\nSUMMARY:تذكير تسجيل الحضور (دوامي)\r\nRRULE:FREQ=WEEKLY;BYDAY="+icalDays()+"\r\nDTSTART:"+startDate+"T"+workRules().inMax.replace(':','')+"00\r\nDURATION:PT10M\r\nEND:VEVENT\r\n" +
+      "END:VCALENDAR\r\n";
     var blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
     var link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', 'monzer_work_reminders.ics');
+    link.setAttribute('download', 'duwami_work_reminders.ics');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -885,35 +1225,39 @@ document.addEventListener('click', function(e){
     var blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
     var aLink = document.createElement('a');
     aLink.href = URL.createObjectURL(blob);
-    aLink.download = 'monzer_app_backup_' + ds(new Date()) + '.json';
+    aLink.download = 'duwami_backup_' + ds(new Date()) + '.json';
     aLink.click();
-  }
-  else if(a === 'auto_backup_download'){
-    var blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
-    var aLink = document.createElement('a');
-    aLink.href = URL.createObjectURL(blob);
-    aLink.download = 'Monzer_App_Secure_Auto_Backup_' + ds(new Date()) + '.json';
-    document.body.appendChild(aLink);
-    aLink.click();
-    document.body.removeChild(aLink);
-    alert('تم تنزيل النسخة الاحتياطية الأوتوماتيكية بنجاح إلى ذاكرة هاتفك (مجلد التنزيلات) 🛡️✅');
   }
   else if(a === 'exp_csv'){
-    var csv = "\uFEFFالتاريخ,النوع,التفاصيل\n";
-    Object.keys(S.att).forEach(function(k){ csv += k + ",حضور وانصراف,حضور: " + (S.att[k].in||'') + " | انصراف: " + (S.att[k].out||'') + "\n"; });
-    S.leaves.forEach(function(l){ csv += l.date + ",إجازة " + NAMES[l.type] + "," + l.days + " يوم\n"; });
+    var csvCell=function(x){return '"'+String(x==null?'':x).replace(/"/g,'""')+'"';};
+    var csv = "\uFEFFالتاريخ,النوع,التفاصيل\r\n";
+    Object.keys(S.att).sort().forEach(function(k){ csv += [k,'حضور وانصراف','حضور: '+(S.att[k].in||'')+' | انصراف: '+(S.att[k].out||'')].map(csvCell).join(',')+"\r\n"; });
+    S.leaves.forEach(function(l){ csv += [l.date,'إجازة '+NAMES[l.type],l.days+' يوم'].map(csvCell).join(',')+"\r\n"; });
+    S.ot.forEach(function(o){csv += [o.date,'سهر إضافي',o.from+'–'+o.to+' ('+otHours(o)+' ساعة) '+money(otPay(o))].map(csvCell).join(',')+"\r\n";});
+    S.work.forEach(function(w){csv += [w.date,w.kind==='holiday'?'عمل عطلة رسمية':'عمل راحة أسبوعية',money(w.customPay||(w.kind==='holiday'?2*dailyRate():dailyRate()))].map(csvCell).join(',')+"\r\n";});
+    S.shifts.forEach(function(x){csv += [x.date,'وردية '+(x.type==='night'?'ليلية':'وسطى'),x.in+'–'+x.out+' '+money(x.rate)].map(csvCell).join(',')+"\r\n";});
+    S.ramadanAtt.forEach(function(x){csv += [x.date,'دوام رمضان',x.in+'–'+x.out].map(csvCell).join(',')+"\r\n";});
+    S.ramadanOt.forEach(function(x){csv += [x.date,'سهر رمضان',x.from+'–'+x.to+' '+money(x.otRate)].map(csvCell).join(',')+"\r\n";});
+    Object.keys(S.breaks).sort().forEach(function(date){S.breaks[date].forEach(function(x){csv += [date,'استراحة',x.start+'–'+(x.end||'مفتوحة')].map(csvCell).join(',')+"\r\n";});});
+    S.schedules.forEach(function(x){csv += ['أسبوعي — '+DAY_NAMES[x.weekday],'وردية مجدولة',x.start+'–'+x.end+' • استراحة '+x.breakMinutes+' دقيقة'].map(csvCell).join(',')+"\r\n";});
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     var aLink = document.createElement('a');
     aLink.href = URL.createObjectURL(blob);
-    aLink.download = 'monzer_app_report_' + ds(new Date()) + '.csv';
+    aLink.download = 'duwami_report_' + ds(new Date()) + '.csv';
     aLink.click();
   }
   else if(a === 'rs'){
     try {
       var ob = JSON.parse(V('bkt'));
-      if(!ob || typeof ob !== 'object' || !ob.att) throw 0;
-      S = Object.assign({ salary:0, att:{}, leaves:[], ot:[], work:[], shifts:[], ramadanAtt:[], ramadanOt:[] }, ob);
-      alert('تم استرجاع البيانات بنجاح ✅');
+      if(!hasValidStateShape(ob)) throw 0;
+      S = normalizeState(ob);
+      storageLocked = false;
+      storageWriteFailed = false;
+      storageProblem = '';
+      if(save()) alert('تم استرجاع البيانات بنجاح وحفظها ✅');
+      else alert('تم تحميل النسخة في هذه الجلسة، لكن تعذر حفظها. صدّر نسخة احتياطية ولا تغلق الصفحة قبل معالجة التخزين.');
+      render();
+      return;
     } catch(x) {
       document.getElementById('bkm').textContent = 'النص المدخل غير صحيح، تأكد من نسخه بالكامل';
       return;
@@ -925,19 +1269,12 @@ document.addEventListener('click', function(e){
 });
 
 render();
-</script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./sw.js').then(function(registration) {
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
+inspectStoragePersistence();
+window.addEventListener('load',registerOfflineSupport);
+if(!('serviceWorker' in navigator)||(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')){
+  window.__duwamiOfflineReady=false;
+  updateOfflineStatus();
 }
 </script>
-
 </body>
 </html>

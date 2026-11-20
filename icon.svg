@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="أيقونة دوامي">
+  <defs>
+    <linearGradient id="bg" x1="58" y1="28" x2="454" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f766e"/><stop offset="1" stop-color="#164e63"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="144" y1="96" x2="364" y2="416" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/><stop offset="1" stop-color="#e6fffb"/>
+    </linearGradient>
+    <filter id="shadow" x="66" y="70" width="380" height="386" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="118" fill="url(#bg)"/>
+  <circle cx="410" cy="108" r="72" fill="#ffffff" opacity=".06"/>
+  <circle cx="91" cy="414" r="94" fill="#ffffff" opacity=".05"/>
+  <rect x="114" y="110" width="284" height="300" rx="42" fill="#052f32" opacity=".28" filter="url(#shadow)"/>
+  <rect x="112" y="96" width="288" height="320" rx="42" fill="url(#paper)"/>
+  <path d="M112 138a42 42 0 0 1 42-42h204a42 42 0 0 1 42 42v54H112z" fill="#14b8a6"/>
+  <rect x="174" y="78" width="24" height="68" rx="12" fill="#f0fdfa"/>
+  <rect x="314" y="78" width="24" height="68" rx="12" fill="#f0fdfa"/>
+  <path d="M162 226h34m35 0h34m35 0h16M162 263h30m39 0h28m42 0h20" stroke="#99b9b8" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="256" cy="330" r="68" fill="#0f766e"/>
+  <path d="m222 329 24 25 48-53" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
