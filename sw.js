@@ -1,58 +1,80 @@
-/* Dawami PWA app shell. Bump CACHE_NAME for each published release. */
-var CACHE_NAME = 'duwami-pwa-v19-1';
-var APP_SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
-var OWN_CACHE_PREFIXES = ['duwami-pwa-', 'monzer-pwa-'];
+var CACHE_NAME = 'monzer-pwa-v3';
+var ASSETS_TO_CACHE = [
+  './',
+  './index.html',
+  './sync.js',
+  './auth.js',
+  './notifications.js',
+  './chat.js',
+  './chat-config.js',
+  './manifest.webmanifest',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './apple-touch-icon.png'
+];
 
+// 1. مرحلة التثبيت وتخزين كافة الملفات محلياً فوراً
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) { return cache.addAll(APP_SHELL); })
-      .then(function() { return self.skipWaiting(); })
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(ASSETS_TO_CACHE);
+    }).then(function() {
+      return self.skipWaiting();
+    })
   );
 });
 
+// 2. تفعيل التخزين وحذف النسخ القديمة فوراً والسيطرة على الصفحات
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
-      return Promise.all(keys.map(function(key) {
-        var isOurCache = OWN_CACHE_PREFIXES.some(function(prefix) { return key.indexOf(prefix) === 0; });
-        if (isOurCache && key !== CACHE_NAME) {
-          return caches.delete(key);
-        }
-      }));
-    }).then(function() { return self.clients.claim(); })
+      return Promise.all(
+        keys.map(function(key) {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(function() {
+      return self.clients.claim();
+    })
   );
 });
 
+// 3. استراتيجية Cache-First (الجلب من الذاكرة المحلية أولاً وقبل كل شيء)
 self.addEventListener('fetch', function(event) {
-  var request = event.request;
-  var requestURL = new URL(request.url);
+  // تجاهل طلبات قاعدة البيانات أو الـ Firebase أو الطلبات غير GET
+  if (
+    event.request.url.includes('firebaseio.com') ||
+    event.request.url.includes('googleapis.com') ||
+    event.request.url.includes('gstatic.com') ||
+    event.request.method !== 'GET'
+  ) {
+    return;
+  }
 
-  // Keep APIs, model hosts, and all other cross-origin requests outside this shell cache.
-  if (request.method !== 'GET' || requestURL.origin !== self.location.origin) return;
-
-  event.respondWith((async function() {
-    var cache = await caches.open(CACHE_NAME);
-    var cached = await cache.match(request, { ignoreSearch: true });
-    if (cached) return cached;
-
-    try {
-      var response = await fetch(request);
-      if (response && response.ok && response.type === 'basic') {
-        await cache.put(request, response.clone()).catch(function() {});
+  event.respondWith(
+    caches.match(event.request).then(function(cachedResponse) {
+      if (cachedResponse) {
+        // إذا وجد الملف مخزناً محلياً، قم بإرجاعه فوراً وبدون أي انتظار للإنترنت
+        return cachedResponse;
       }
-      return response;
-    } catch (error) {
-      if (request.mode === 'navigate') {
-        var fallbackURL = new URL('./index.html', self.registration.scope).href;
-        var fallback = await cache.match(fallbackURL);
-        if (fallback) return fallback;
-      }
-      return new Response('هذا المورد غير متاح دون اتصال بالإنترنت.', {
-        status: 503,
-        statusText: 'Offline',
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+      // إذا لم يكن موجوداً محلياً، حاول جلبه من الشبكة كخيار ثانٍ وتخزينه
+      return fetch(event.request).then(function(networkResponse) {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          var responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(function() {
+        // إذا فشلت الشبكة (لا يوجد إنترنت)، أرجع index.html الرئيسي للتنقل
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
       });
-    }
-  })());
+    })
+  );
 });
